@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <link rel="stylesheet" type="text/css" href="TemplateForMyself_text.css">
+</head>
+    <body>
+
+        <div class="header">
+        </div>
+
+        <nav id="menu" class="menu">
+            <ul id="menu-list" class="menu-list">
+                <li class="menu-item">
+                    <a href="javascript:void(0)" onclick="onAddProductClicked()" id="link-activity" class="menu-link">AddProduct<span class="menu-line"></span></a>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0)" onclick="onAllProducts()" id="link-all-schedules" class="menu-link">All Product<span class="menu-line"></span></a>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0)" onclick="onCartClicked()" id="link-tasks" class="menu-link">My Cart<span class="menu-line"></span></a>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0)" onclick="onOrdersClicked()" id="link-schedules" class="menu-link">My Orders<span class="menu-line"></span></a>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0)" onclick="onProfileClicked()" id="link-profile" class="menu-link">My Profile<span class="menu-line"></span></a>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0)" onclick="onLogoutClicked()" id="link-logout" class="menu-link">Logout<span class="menu-line"></span></a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="wrapper">
+
+            <div class="content">
+                <div class="container">
+                    <div class="containerhead">
+                        <div class="title"><a href="">Home</a></div>
+                    </div>
+                    <div class="main-content">
+                        <h1>Welcome on our page!</h1>
+                        Here you can find the best product!
+                    </div>
+                    <div class="containerfoot"></div>
+                </div>
+            </div>
+            <div class= rightcoloumn>
+                <div class="loginbox">
+                        <div class="loginboxsubstyle">
+                            <div class="desc">
+                                <div class="containerhead">
+                                    <div class="title">Login</div>
+                                </div>
+                                <section id="login-content" class="content-box">
+                                    <form id="login-form" class="menu-form" onsubmit="return false;">
+                                        <input name="email" class="text-input" placeholder="Email">
+                                        <input name="password" type="password" class="text-input" placeholder="Password">
+                                        <br>
+                                        <button id="login-button" class="form-button">Login</button>
+                                        <p id="register-text" class="register-text">
+                                            No account yet? Click <a href="javascript:void(0)" id="register-redirect">here</a> to register!
+                                        </p>
+                                    </form>
+
+                                    <form id="register-form" class="menu-form hidden" onsubmit="return false;">
+                                        <input name="name" class="text-input" placeholder="Name">
+                                        <input name="email" class="text-input" placeholder="Email">
+                                        <input name="password" type="password" class="text-input" placeholder="Password">
+                                        <br>
+                                        <button id="register-button" class="form-button">Register</button>
+                                        <p id="login-text" class="register-text">
+                                            Already have an account? Click <a href="javascript:void(0)" id="login-redirect">here</a> to login!
+                                        </p>
+                                    </form>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="sidebar1">
+                    <div class="sbcontainer1">
+
+                        <div class="desc">
+                            <div class="containerhead">
+                                <div class="title">Info</div>
+                            </div>
+                            <p>
+                                Some sidebar text. and links
+                            </p>
+                        </div>
+
+                        <ul class="links">
+                            <div class="one.html">One</div>
+                            <li><a href="two.html">Two</a></li>
+                            <li><a href="three.html">Three</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
