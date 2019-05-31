@@ -21,7 +21,6 @@ CREATE TABLE users(
 CREATE TABLE products(
 	product_id SERIAL PRIMARY KEY,
 	product_name varchar(100),
-	product_type varchar(40),
 	product_price integer,
 	product_description TEXT,
 	product_number_stock integer,
@@ -128,25 +127,33 @@ create trigger check_duplicates_in_cart
     before insert on carts
     for each row EXECUTE procedure increase_product_count();
 
-insert into users(user_name, user_email, user_password, user_role) values ('a', 'a', 'a', 'EMPLOYEE');
-insert into users(user_name, user_email, user_password, user_role) values ('r', 'r', 'r', 'CUSTOMER');
-insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product1', 20000, 'producttype', 'product1 descript', 10);
-insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product2', 20000, 'producttype', 'product1 descript', 10);
-insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product3', 20000, 'producttype', 'product1 descript', 10);
-insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product4', 20000, 'producttype', 'product1 descript', 10);
-insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product5', 20000, 'producttype', 'product1 descript', 10);INSERT into orders(ordered_total_price, user_id) values (20000, 1);
-insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product6', 20000, 'producttype', 'product1 descript', 10);
-INSERT into orders(ordered_total_price, user_id) values (50000, 1);
-INSERT into orders(ordered_total_price, user_id) values (60000, 1);
-INSERT into orders(ordered_total_price, user_id) values (60000, 1);
-INSERT into orders(ordered_total_price, user_id) values (60000, 2);
-INSERT into orders(ordered_total_price, user_id) values (60000, 2);
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) values (1, 1, 1);
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) values (1, 1, 2);
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) values (1, 1, 3);
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) values (1, 1, 4);
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) values (1, 1, 1);
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) values (2, 1, 1);
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) values (2, 1, 2);
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) values (2, 1, 3);
+INSERT INTO users(user_name, user_email, user_password, user_role) VALUES
+	('a', 'a', '1000:52a2e5376fe9155814775f1e3231a526:191ade9da2dcbabfc870ba70263b7af6865b40d8e179d19e8ea504d257810c6e78a316d77f5bd8716a7fa54f39b1f082c773ca80b45526dd59c933522e341216', 'EMPLOYEE'),
+	('r', 'r', '1000:12b64240b3c5da1f64daa0d26dbd7bfb:e314534adbb83fa0d605557a1d7394f6936b10efcfc89cae85260e69ad452241cbdd6d043ae51ecc92e8776b4aa369fa6afb028cac5254f9cc7a4e8eae0722c2', 'CUSTOMER'),
+	('c', 'c', '1000:12b64240b3c5da1f64daa0d26dbd7bfb:e314534adbb83fa0d605557a1d7394f6936b10efcfc89cae85260e69ad452241cbdd6d043ae51ecc92e8776b4aa369fa6afb028cac5254f9cc7a4e8eae0722c2', 'CUSTOMER');
+
+INSERT INTO products(product_name, product_price, product_description, product_number_stock) VALUES
+	('HP - ENVY x360 2-in-1', 220, 'Improve productivity with this laptop.', 10),  				--1
+	('HP - Chromebook', 300, 'ChromeBook', 6),  												--2
+	('Dell - Inspiron 2-in-1 ', 1000, '4K Ultra HD.', 10),  									--3
+	('Lenovo - 130-15AST', 400, 'Ideal for student.', 4),  										--4
+	('HP - Pavilion x360 2-in-1', 600, 'HP Pavilion x360 Convertible 2-in-1 Laptop.', 2),  		--5
+	('Microsoft - Surface Book 2', 1300, 'HP Pavilion x360 Convertible 2-in-1 Laptop.', 1);  	--6
+
+INSERT INTO orders(ordered_total_price, user_id) VALUES
+	(50000, 2),
+	(60000, 2),
+	(60000, 3),
+	(60000, 3),
+	(60000, 3);
+
+INSERT INTO orders_products(order_id, quantity_ordered, product_id) VALUES
+	(1, 1, 1),
+	(1, 1, 2),
+	(1, 1, 3),
+	(1, 1, 4),
+	(1, 1, 1),
+	(2, 1, 1),
+	(2, 1, 2),
+	(2, 1, 3);
 
