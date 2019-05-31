@@ -15,6 +15,7 @@ let logoutContentDivEl;
 let menuListEl;
 let mainContentEl;
 let loginTitleEl;
+let allProductsEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -125,7 +126,8 @@ function setUnauthorized() {
 }
 
 function onLoad() {
-    menuListEl = document.getElementById('menu');
+    navDivEl = document.getElementById('menu');
+    menuListEl = document.getElementById('menu-list');
     mainContentEl = document.getElementById('main-content');
     loginContentDivEl = document.getElementById('login-content');
 
@@ -137,11 +139,13 @@ function onLoad() {
     registerRedirectEl = document.getElementById('register-redirect');
     registerRedirectEl.addEventListener('click', onRegisterRedirectClicked);
 
+    allProductsEl = document.getElementById('all-products-content');
+
     profileContentDivEl = document.getElementById('profile-content');
+
     couponContentDivEl = document.getElementById('coupon-content');
     couponsContentDivEl = document.getElementById('coupons-content');
-    shopContentDivEl = document.getElementById('shop-content');
-    shopsContentDivEl = document.getElementById('shops-content');
+
     backToProfileContentDivEl = document.getElementById('back-to-profile-content');
     logoutContentDivEl = document.getElementById('logout-content');
 
