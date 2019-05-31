@@ -1,4 +1,5 @@
 function onRegisterRedirectClicked() {
+    clearMessages();
     showContents(['container', 'login-content']);
     loginTitleEl.textContent = 'Register';
     hideContentById('login-form');
@@ -6,6 +7,7 @@ function onRegisterRedirectClicked() {
 }
 
 function onLoginRedirectClicked() {
+    clearMessages();
     showContents(['container', 'login-content']);
     loginTitleEl.textContent = 'Login';
     hideContentById('register-form');
