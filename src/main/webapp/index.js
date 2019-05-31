@@ -12,6 +12,9 @@ let shopContentDivEl;
 let shopsContentDivEl;
 let backToProfileContentDivEl;
 let logoutContentDivEl;
+let menuListEl;
+let mainContentEl;
+let loginTitleEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -41,13 +44,13 @@ function clearMessages() {
 }
 
 function showContents(ids) {
-    const contentEls = document.getElementsByClassName('content');
+    const contentEls = document.getElementsByClassName('content-box');
     for (let i = 0; i < contentEls.length; i++) {
         const contentEl = contentEls[i];
         if (ids.includes(contentEl.id)) {
-            contentEl.classList.remove('hidden');
+            contentEl.style.display = 'block';
         } else {
-            contentEl.classList.add('hidden');
+            contentEl.style.display = 'none';
         }
     }
 }
@@ -81,8 +84,32 @@ function onOtherResponse(targetEl, xhr) {
     }
 }
 
+function showMenu() {
+    menuListEl.style.display = 'block';
+}
+
+function hideMenu() {
+    menuListEl.style.display = 'none';
+}
+
+function showContentById(id) {
+    const contentEl = document.getElementById(id);
+    contentEl.style.display = 'block';
+}
+
+function hideContentById(id) {
+    const contentEl = document.getElementById(id);
+    contentEl.style.display = 'none';
+}
+
 function hasAuthorization() {
-    return localStorage.getItem('user') !== null;
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/coupon');
+    xhr.send();
+    if (xhr.status === OK) {
+        return true;
+    }
 }
 
 function setAuthorization(user) {
@@ -98,7 +125,18 @@ function setUnauthorized() {
 }
 
 function onLoad() {
+    menuListEl = document.getElementById('menu');
+    mainContentEl = document.getElementById('main-content');
     loginContentDivEl = document.getElementById('login-content');
+
+    loginTitleEl = document.getElementById('login-title');
+
+    loginRedirectEl = document.getElementById('login-redirect');
+    loginRedirectEl.addEventListener('click', onLoginRedirectClicked);
+
+    registerRedirectEl = document.getElementById('register-redirect');
+    registerRedirectEl.addEventListener('click', onRegisterRedirectClicked);
+
     profileContentDivEl = document.getElementById('profile-content');
     couponContentDivEl = document.getElementById('coupon-content');
     couponsContentDivEl = document.getElementById('coupons-content');
@@ -110,11 +148,11 @@ function onLoad() {
     const loginButtonEl = document.getElementById('login-button');
     loginButtonEl.addEventListener('click', onLoginButtonClicked);
 
-    const logoutButtonEl = document.getElementById('logout-button');
-    logoutButtonEl.addEventListener('click', onLogoutButtonClicked);
-
     if (hasAuthorization()) {
-        onProfileLoad(getAuthorization());
+        onProfileLoad(getCurrentUser());
+    } else {
+        hideMenu();
+        showContents(['container', 'login-content']);
     }
 }
 
