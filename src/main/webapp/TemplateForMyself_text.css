@@ -292,3 +292,7 @@ section {
 #register-form {
     display: none;
 }
+
+.logout-content {
+  display: none;
+}

@@ -6,6 +6,7 @@
     <script src="index.js"></script>
     <script src="login.js"></script>
     <script src="logout.js"></script>
+    <script src="profile.js"></script>
 </head>
     <body>
 
@@ -30,7 +31,7 @@
                     <a href="javascript:void(0)" onclick="onProfileClicked()" id="link-profile" class="menu-link">My Profile<span class="menu-line"></span></a>
                 </li>
                 <li class="menu-item">
-                    <a href="javascript:void(0)" onclick="onLogoutClicked()" id="link-logout" class="menu-link">Logout<span class="menu-line"></span></a>
+                    <a href="javascript:void(0)" onclick="onLogoutButtonClicked()" id="link-logout" class="menu-link">Logout<span class="menu-line"></span></a>
                 </li>
             </ul>
         </nav>
@@ -78,6 +79,9 @@
                                             Already have an account? Click <a href="javascript:void(0)" id="login-redirect">here</a> to login!
                                         </p>
                                     </form>
+                                </section>
+                                <section id="logout-content" class="content-box">
+                                  <p>Thank you for logging in!</p>
                                 </section>
                             </div>
                         </div>

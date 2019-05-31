@@ -22,13 +22,14 @@ public final class SimpleUserService implements UserService {
 
     @Override
     public User loginUser(String email, String password) throws SQLException, ServiceException {
+        PasswordService passwordService = new PasswordService();
         try {
             User user = userDao.findByEmail(email);
-            if (user == null || !user.getPassword().equals(password)) {
+            if (user == null || ! passwordService.validatePassword(password, user.getPassword())) {
                 throw new ServiceException("Wrong username or password");
             }
             return user;
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
             throw new ServiceException(ex.getMessage());
         }
     }

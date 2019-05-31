@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/protected/logout")
-public final class LogoutServlet extends HttpServlet {
+@WebServlet("/logout")
+public final class LogoutServlet extends AbstractServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getSession().invalidate();
-        resp.setStatus(HttpServletResponse.SC_OK);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getSession().invalidate();
+        sendMessage(response, HttpServletResponse.SC_OK, "Succesfully logged out.");
     }
 }
