@@ -32,7 +32,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
         if (email == null || "".equals(email)) {
             throw new IllegalArgumentException("Email cannot be null or empty");
         }
-        String sql = "SELECT * FROM users WHERE email = ?";
+        String sql = "SELECT * FROM users WHERE user_email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -136,7 +136,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
 
 
     private User fetchUser(ResultSet resultSet) throws SQLException {
-        int id = resultSet.getInt("id");
+        int id = resultSet.getInt("user_id");
         String name = resultSet.getString("user_name");
         String email = resultSet.getString("user_email");
         String password = resultSet.getString("user_password");
