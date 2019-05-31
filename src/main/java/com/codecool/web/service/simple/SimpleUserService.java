@@ -7,6 +7,8 @@ import com.codecool.web.service.UserService;
 import com.codecool.web.service.exception.ServiceException;
 //import javafx.concurrent.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -58,4 +60,5 @@ public final class SimpleUserService implements UserService {
     public boolean doesUserExists(String email) throws SQLException {
         return userDao.doesUserExists(email);
     }
+
 }

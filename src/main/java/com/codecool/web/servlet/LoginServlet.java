@@ -5,6 +5,7 @@ import com.codecool.web.dao.database.DatabaseUserDao;
 import com.codecool.web.model.User;
 import com.codecool.web.service.UserService;
 import com.codecool.web.service.exception.ServiceException;
+import com.codecool.web.service.simple.PasswordService;
 import com.codecool.web.service.simple.SimpleUserService;
 
 import javax.servlet.annotation.WebServlet;
