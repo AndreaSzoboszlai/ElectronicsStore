@@ -148,6 +148,9 @@ function onLoad() {
     const loginButtonEl = document.getElementById('login-button');
     loginButtonEl.addEventListener('click', onLoginButtonClicked);
 
+    const registerButtonEl = document.getElementById('register-button');
+    registerButtonEl.addEventListener('click', onRegisterButtonClicked);
+
     if (hasAuthorization()) {
         onProfileLoad(getCurrentUser());
     } else {
