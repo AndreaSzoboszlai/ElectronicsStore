@@ -13,6 +13,7 @@ public final class DatabaseProductDao extends AbstractDao implements ProductDao 
         super(connection);
     }
 
+    @Override
     public List<Product> findAll() throws SQLException {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM products";
@@ -26,6 +27,7 @@ public final class DatabaseProductDao extends AbstractDao implements ProductDao 
 
     }
 
+    @Override
     public Product findById(int id) throws SQLException {
         String sql = "SELECT * FROM products WHERE id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -39,6 +41,7 @@ public final class DatabaseProductDao extends AbstractDao implements ProductDao 
         return null;
     }
 
+    @Override
     public Product addProduct(String name, int price, String description, int productInStock) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
@@ -60,7 +63,8 @@ public final class DatabaseProductDao extends AbstractDao implements ProductDao 
         }
     }
 
-    public Product fetchProduct(ResultSet resultSet) throws SQLException {
+
+    private Product fetchProduct(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("product_id");
         String name = resultSet.getString("product_name");
         int price = resultSet.getInt("product_price");
