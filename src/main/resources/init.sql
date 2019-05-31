@@ -128,8 +128,8 @@ create trigger check_duplicates_in_cart
     before insert on carts
     for each row EXECUTE procedure increase_product_count();
 
-insert into users(user_name, user_email, user_password, user_role) values ('user1', 'user1email', 'user1pass', 'customer');
-insert into users(user_name, user_email, user_password, user_role) values ('user2', 'user1email2', 'user1pass2', 'customer2');
+insert into users(user_name, user_email, user_password, user_role) values ('a', 'a', 'a', 'EMPLOYEE');
+insert into users(user_name, user_email, user_password, user_role) values ('r', 'r', 'r', 'CUSTOMER');
 insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product1', 20000, 'producttype', 'product1 descript', 10);
 insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product2', 20000, 'producttype', 'product1 descript', 10);
 insert into products(product_name, product_price, product_type, product_description, product_number_stock) values ('product3', 20000, 'producttype', 'product1 descript', 10);
