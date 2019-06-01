@@ -27,6 +27,15 @@ function createCartDisplay(cartDto) {
     tableEl.appendChild(theadEl);
     tableEl.appendChild(tbodyEl);
     cartContentDivEl.appendChild(tableEl);
+    createCouponForm();
+    const buttonTdEl = createNewOrderButton();
+    cartContentDivEl.appendChild(buttonTdEl);
+}
+function createNewOrderButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Order';
+    return buttonEl;
 }
 
 function createCartTableHead() {
@@ -80,7 +89,7 @@ function createCartTableBody(cartDto) {
         const buttonTdEl = document.createElement('td');
         buttonTdEl.appendChild(buttonCartTdEl);
         buttonTdEl.setAttribute('id', 'cart-delete-button-' + product.id);
-        
+
         const trEl = document.createElement('tr');
         trEl.setAttribute('id', 'row-cart-id-' + product.id);
 
@@ -91,5 +100,38 @@ function createCartTableBody(cartDto) {
         trEl.appendChild(buttonTdEl);
         tbodyEl.appendChild(trEl);
     }
+
     return tbodyEl;
+}
+
+function createCouponForm() {
+    const formEl = document.createElement('form');
+    formEl.setAttribute('id','add-coupon-form');
+    formEl.classList.add('menu-form');
+    formEl.onSubmit = 'return false;';
+
+    const inputNaEl = document.createElement("input"); //input element, text
+    inputNaEl.setAttribute("type","text");
+    inputNaEl.classList.add("text-input");
+    inputNaEl.placeholder = "Coupon code";
+    inputNaEl.setAttribute("name","coupon-name");
+
+    const brEl = document.createElement("br");
+
+    const sEl = createNewSubmitButton();
+    sEl.addEventListener('click', onSubmitNewProduct);
+    formEl.appendChild(inputNaEl);
+    formEl.appendChild(brEl);
+    formEl.appendChild(sEl);
+
+    cartContentDivEl.appendChild(formEl);
+}
+
+function createNewSubmitButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.setAttribute('id', 'add-coupon-button');
+    buttonEl.setAttribute('type', 'button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Add coupon to cart';
+    return buttonEl;
 }
