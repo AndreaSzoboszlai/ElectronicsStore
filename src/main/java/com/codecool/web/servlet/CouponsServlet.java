@@ -37,8 +37,8 @@ public final class CouponsServlet extends AbstractServlet {
             CouponDao couponDao = new DatabaseCouponDao(connection);
             CouponService couponService = new SimpleCouponService(couponDao);
 
-            String name = req.getParameter("couponName");
-            int percentage = Integer.valueOf(req.getParameter("couponPercentage"));
+            String name = req.getParameter("coupon-name");
+            int percentage = Integer.valueOf(req.getParameter("coupon-percentage"));
             Coupon coupon = couponService.add(name, percentage);
 
             sendMessage(resp, HttpServletResponse.SC_OK, "Coupon sucesfully added");

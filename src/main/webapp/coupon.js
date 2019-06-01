@@ -23,10 +23,11 @@ function createCouponsTable(coupons) {
     const theader = createCouponHeader();
     const tbody = createCouponTable(coupons);
     const createBtn = createNewCouponButton()
+    createBtn.addEventListener('click', onAddCouponClicked);
     tableEl.appendChild(theader);
     tableEl.appendChild(tbody);
-    tableEl.appendChild(createBtn);
     couponContentDivEl.appendChild(tableEl);
+    couponContentDivEl.appendChild(createBtn);
 }
 
 function createNewCouponButton() {
@@ -45,7 +46,7 @@ function createCouponHeader() {
     percentageThEl.textContent = 'Percentage'
 
     const deleteThEl = document.createElement('th');
-    deleteThEl.textContent = 'Percentage'
+    deleteThEl.textContent = 'Delete'
 
     const trTdEl = document.createElement('tr');
     trTdEl.appendChild(nameThEl);
@@ -69,7 +70,7 @@ function createCouponTable(coupons) {
         const buttonDeleteTdEl = document.createElement('i');
         buttonDeleteTdEl.classList.add('icon-trash');
         buttonDeleteTdEl.dataset.productEdit = coupon.id;
-        //buttonCartTdEl.addEventListener('click', onProductEditClicked);
+        buttonDeleteTdEl.addEventListener('click', onCouponDeleteClicked);
         const trEl = document.createElement('tr');
         trEl.setAttribute('id', 'row-coupon-id-' + coupon.id);
 
@@ -80,4 +81,8 @@ function createCouponTable(coupons) {
         tbodyEl.appendChild(trEl);
     }
     return tbodyEl;
+}
+
+function onCouponDeleteClicked() {
+    console.log('Still needs to implement it');
 }
