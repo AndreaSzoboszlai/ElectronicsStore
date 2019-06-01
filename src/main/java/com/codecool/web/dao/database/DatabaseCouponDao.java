@@ -28,7 +28,7 @@ public final class DatabaseCouponDao extends AbstractDao implements CouponDao {
 
     @Override
     public Coupon findById(int id) throws SQLException {
-        String sql = "SELECT * FROM coupons WHERE id = ?";
+        String sql = "SELECT * FROM coupons WHERE coupon_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -112,9 +112,9 @@ public final class DatabaseCouponDao extends AbstractDao implements CouponDao {
     }
 
     private Coupon fetchCoupon(ResultSet resultSet) throws SQLException {
-        int id = resultSet.getInt("id");
-        String name = resultSet.getString("name");
-        int percentage = resultSet.getInt("percentage");
+        int id = resultSet.getInt("coupon_id");
+        String name = resultSet.getString("coupon_name");
+        int percentage = resultSet.getInt("coupon_percentage");
         return new Coupon(id, name, percentage);
     }
 }
