@@ -20,48 +20,31 @@ import java.util.List;
 @WebServlet("/protected/coupon")
 public final class CouponServlet extends AbstractServlet {
 
-    // https://www.postgresql.org/docs/current/static/errcodes-appendix.html
-    private static final String SQL_ERROR_CODE_UNIQUE_VIOLATION = "23505";
-
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try (Connection connection = getConnection(req.getServletContext())) {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
             CouponDao couponDao = new DatabaseCouponDao(connection);
-/*            ShopDao shopDao = new DatabaseShopDao(connection);
-            ShopService shopService = new SimpleShopService(shopDao);
-            CouponService couponService = new SimpleCouponService(couponDao, shopDao);
+            CouponService couponService = new SimpleCouponService(couponDao);
 
-            String id = req.getParameter("id");
-
-            Coupon coupon = couponService.getCoupon(id);
-            List<Shop> allShops = shopService.getShops();
-            List<Shop> couponShops = couponService.getCouponShops(id);
-
-            sendMessage(resp, HttpServletResponse.SC_OK, new CouponDto(coupon, couponShops, allShops));*/
+            int id = Integer.valueOf(request.getParameter("coupon-id"));
+            Coupon coupon = couponService.findById(id);
+            sendMessage(response, HttpServletResponse.SC_OK, coupon);
         } catch (SQLException ex) {
-            handleSqlError(resp, ex);
+            handleSqlError(response, ex);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try (Connection connection = getConnection(req.getServletContext())) {
-/*            CouponDao couponDao = new DatabaseCouponDao(connection);
-            ShopDao shopDao = new DatabaseShopDao(connection);
-            CouponService couponService = new SimpleCouponService(couponDao, shopDao);
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            CouponDao couponDao = new DatabaseCouponDao(connection);
+            CouponService couponService = new SimpleCouponService(couponDao);
 
-            String couponId = req.getParameter("id");
-            String[] shopIds = req.getParameterValues("shopIds");
-
-            couponService.addCouponToShops(couponId, shopIds);*/
-
-            doGet(req, resp);
+            int id = Integer.valueOf(request.getParameter("coupon-id"));
+            couponService.deleteCouponById(id);
+            sendMessage(response, HttpServletResponse.SC_OK, "Coupon successfully deleted");
         } catch (SQLException ex) {
-            if (SQL_ERROR_CODE_UNIQUE_VIOLATION.equals(ex.getSQLState())) {
-                sendMessage(resp, HttpServletResponse.SC_BAD_REQUEST, "Coupon has been already added to one of the selected shops");
-            } else {
-                handleSqlError(resp, ex);
-            }
+            sendMessage(response, HttpServletResponse.SC_BAD_REQUEST, ex);
         }
     }
 }

@@ -69,7 +69,7 @@ function createCouponTable(coupons) {
         percentageTdEl.textContent = coupon.percentage;
         const buttonDeleteTdEl = document.createElement('i');
         buttonDeleteTdEl.classList.add('icon-trash');
-        buttonDeleteTdEl.dataset.productEdit = coupon.id;
+        buttonDeleteTdEl.dataset.couponEditId = coupon.id;
         buttonDeleteTdEl.addEventListener('click', onCouponDeleteClicked);
         const trEl = document.createElement('tr');
         trEl.setAttribute('id', 'row-coupon-id-' + coupon.id);
@@ -84,5 +84,24 @@ function createCouponTable(coupons) {
 }
 
 function onCouponDeleteClicked() {
-    console.log('Still needs to implement it');
+    const couponEditId = this.dataset.couponEditId;
+
+    const params = new URLSearchParams();
+    params.append('coupon-id', couponEditId);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onDeleteResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/coupon?' + params.toString());
+    xhr.send();
+}
+
+function onDeleteResponse() {
+    if (this.status === OK) {
+        const response = JSON.parse(this.responseText);
+        alert(response.message);
+        onCouponsClicked();
+    } else {
+        onOtherResponse(couponContentDivEl, this);
+    }
 }
