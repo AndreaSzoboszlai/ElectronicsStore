@@ -1,18 +1,19 @@
 package com.codecool.web.dao.database;
 
+import com.codecool.web.dao.OrderDao;
 import com.codecool.web.model.Order;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DatabaseOrderDao extends AbstractDao {
+public final class DatabaseOrderDao extends AbstractDao implements OrderDao {
 
     public DatabaseOrderDao(Connection connection) {
         super(connection);
     }
 
-
+    @Override
     public List<Order> findAll() throws SQLException {
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM coupons";
@@ -25,6 +26,7 @@ public final class DatabaseOrderDao extends AbstractDao {
         return orders;
     }
 
+    @Override
     public List<Order> findOrdersByUser(int id) throws SQLException {
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM orders WHERE user_id = ?";
@@ -39,6 +41,7 @@ public final class DatabaseOrderDao extends AbstractDao {
         return orders;
     }
 
+    @Override
     public Order findOrderById(int id) throws SQLException {
         String sql = "SELECT * FROM orders WHERE order_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
