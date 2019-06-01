@@ -15,6 +15,8 @@ let mainContentEl;
 let loginTitleEl;
 let allProductsEl;
 let addProductContentEl;
+let allOrdersContentDivEl;
+let myOrdersContentDivEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -148,6 +150,9 @@ function onLoad() {
     profileContentDivEl = document.getElementById('profile-content');
 
     couponContentDivEl = document.getElementById('all-coupon-content');
+    allOrdersContentDivEl = document.getElementById('all-orders-content');
+    myOrdersContentDivEl = document.getElementById('my-orders-content');
+    cartContentDivEl = document.getElementById('my-cart-content');
     couponsContentDivEl = document.getElementById('coupons-content');
 
     backToProfileContentDivEl = document.getElementById('back-to-profile-content');
