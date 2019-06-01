@@ -5,11 +5,7 @@ const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
 let loginContentDivEl;
-let profileContentDivEl;
 let couponContentDivEl;
-let couponsContentDivEl;
-let backToProfileContentDivEl;
-let logoutContentDivEl;
 let menuListEl;
 let mainContentEl;
 let loginTitleEl;
@@ -146,17 +142,10 @@ function onLoad() {
     registerRedirectEl.addEventListener('click', onRegisterRedirectClicked);
 
     allProductsEl = document.getElementById('all-products-content');
-
-    profileContentDivEl = document.getElementById('profile-content');
-
     couponContentDivEl = document.getElementById('all-coupon-content');
     allOrdersContentDivEl = document.getElementById('all-orders-content');
     myOrdersContentDivEl = document.getElementById('my-orders-content');
     cartContentDivEl = document.getElementById('my-cart-content');
-    couponsContentDivEl = document.getElementById('coupons-content');
-
-    backToProfileContentDivEl = document.getElementById('back-to-profile-content');
-    logoutContentDivEl = document.getElementById('logout-content');
 
     const loginButtonEl = document.getElementById('login-button');
     loginButtonEl.addEventListener('click', onLoginButtonClicked);

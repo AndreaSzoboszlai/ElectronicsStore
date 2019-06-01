@@ -67,10 +67,12 @@ function createCouponTable(coupons) {
         nameTdEl.textContent = coupon.name;
         const percentageTdEl = document.createElement('td');
         percentageTdEl.textContent = coupon.percentage;
-        const buttonDeleteTdEl = document.createElement('i');
-        buttonDeleteTdEl.classList.add('icon-trash');
-        buttonDeleteTdEl.dataset.couponEditId = coupon.id;
-        buttonDeleteTdEl.addEventListener('click', onCouponDeleteClicked);
+        const buttonDeleteEl = document.createElement('i');
+        buttonDeleteEl.classList.add('icon-trash');
+        buttonDeleteEl.dataset.couponEditId = coupon.id;
+        buttonDeleteEl.addEventListener('click', onCouponDeleteClicked);
+        const buttonDeleteTdEl = document.createElement('td');
+        buttonDeleteTdEl.appendChild(buttonDeleteEl);
         const trEl = document.createElement('tr');
         trEl.setAttribute('id', 'row-coupon-id-' + coupon.id);
 

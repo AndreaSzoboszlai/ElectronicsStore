@@ -87,7 +87,7 @@ function createProductTableBody(products) {
         const trEl = document.createElement('tr');
         trEl.setAttribute('id', 'row-product-id-' + product.id);
 
-        trEl.appendChild(nameAEl);
+        trEl.appendChild(nameTdEl);
         trEl.appendChild(priceTdEl);
         trEl.appendChild(stockTdEl);
         trEl.appendChild(buttonTdEl);

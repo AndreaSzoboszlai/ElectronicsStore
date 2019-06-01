@@ -71,7 +71,7 @@ function createOrdersTableBody(orders) {
         const trEl = document.createElement('tr');
         trEl.setAttribute('id', 'row-product-id-' + order.id);
 
-        trEl.appendChild(nameAEl);
+        trEl.appendChild(nameTdEl);
         trEl.appendChild(priceTdEl);
         trEl.appendChild(statusTdEl);
         tbodyEl.appendChild(trEl);

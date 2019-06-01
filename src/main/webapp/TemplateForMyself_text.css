@@ -314,3 +314,25 @@ section {
 .content-box{
     text-align: center;
 }
+
+table {
+  margin: 0 auto;
+  width: 100%;
+}
+
+th {
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    margin: 0 auto;
+    font-weight: bold;
+}
+td {
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 auto;
+    border-bottom: 1px solid #ddd;
+}
