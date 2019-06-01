@@ -20,7 +20,7 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
     @Override
     public List<ProductsInCartDto> findCartByUser(int id) throws SQLException {
         List<ProductsInCartDto> productsInCart = new ArrayList<>();
-        String sql = "SELECT products.product_id, product_name, product_price, quantity_ordered, total_price FROM products JOIN (SELECT carts.user_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id=2) AS temp_table ON temp_table.product_id = products.product_id";
+        String sql = "SELECT products.product_id, product_name, product_price, quantity_ordered, total_price FROM products JOIN (SELECT carts.user_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -29,14 +29,15 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
                 }
             }
         }
-        return null;
+        return productsInCart;
     }
 
     private ProductsInCartDto fetchProducts(ResultSet resultSet) throws SQLException {
         int productId = resultSet.getInt("product_id");
         String name = resultSet.getString("product_name");
         int price = resultSet.getInt("product_price");
+        int quantity = resultSet.getInt("quantity_ordered");
         int totalPrice = resultSet.getInt("total_price");
-        return new ProductsInCartDto();
+        return new ProductsInCartDto(productId, name, price, quantity, totalPrice);
     }
 }
