@@ -7,14 +7,14 @@ import java.util.Objects;
 
 public class Order extends AbstractModel{
     private int id;
-    private boolean order_status;
+    private boolean orderStatus;
     private int totalPrice;
     private Map<Product, Integer> orderedProducts;
 
-    public Order(int id, boolean order_status, int totalPrice) {
+    public Order(int id, boolean orderStatus, int totalPrice) {
+        super(id);
         this.orderedProducts = new HashMap<>();
-        this.id = id;
-        this.order_status = order_status;
+        this.orderStatus = orderStatus;
         this.totalPrice = totalPrice;
     }
 
@@ -22,8 +22,8 @@ public class Order extends AbstractModel{
         orderedProducts.put(product, quantity);
     }
 
-    public boolean isOrder_status() {
-        return order_status;
+    public boolean isOrderStatus() {
+        return orderStatus;
     }
 
     public int getTotalPrice() {
@@ -35,12 +35,12 @@ public class Order extends AbstractModel{
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return order_status == order.order_status &&
+        return orderStatus == order.orderStatus &&
             totalPrice == order.totalPrice;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(order_status, totalPrice);
+        return Objects.hash(orderStatus, totalPrice);
     }
 }

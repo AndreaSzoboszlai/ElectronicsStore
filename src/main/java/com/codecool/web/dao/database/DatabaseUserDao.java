@@ -3,7 +3,6 @@ package com.codecool.web.dao.database;
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.model.Role;
 import com.codecool.web.model.User;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +15,15 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
 
     @Override
     public List<User> findAll() throws SQLException {
+        List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
         try (Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql)) {
-            List<User> users = new ArrayList<>();
             while (resultSet.next()) {
                 users.add(fetchUser(resultSet));
             }
-            return users;
         }
+        return users;
     }
 
     @Override

@@ -16,9 +16,9 @@ public final class DatabaseOrderDao extends AbstractDao implements OrderDao {
     @Override
     public List<Order> findAll() throws SQLException {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT * FROM coupons";
+        String sql = "SELECT * FROM orders";
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+            ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 orders.add(fetchOrder(resultSet));
             }
