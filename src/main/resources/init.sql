@@ -157,3 +157,6 @@ INSERT INTO orders_products(order_id, quantity_ordered, product_id) VALUES
 	(2, 1, 2),
 	(2, 1, 3);
 
+INSERT INTO coupons(coupon_name, coupon_percent) VALUES
+	('Summer Sale', 20),
+	('June Sale', 15);
