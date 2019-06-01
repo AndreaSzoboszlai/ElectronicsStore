@@ -114,7 +114,7 @@ public final class DatabaseCouponDao extends AbstractDao implements CouponDao {
     private Coupon fetchCoupon(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("coupon_id");
         String name = resultSet.getString("coupon_name");
-        int percentage = resultSet.getInt("coupon_percentage");
+        int percentage = resultSet.getInt("coupon_percent");
         return new Coupon(id, name, percentage);
     }
 }

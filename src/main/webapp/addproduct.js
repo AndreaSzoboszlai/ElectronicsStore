@@ -1,5 +1,5 @@
 function onAddProductClicked() {
-    removeAllChildren(allProductsEl);
+    removeAllChildren(addProductContentEl);
     showContents(['add-products-content']);
     createNewProductForm();
 }

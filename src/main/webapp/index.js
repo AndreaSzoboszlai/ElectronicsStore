@@ -147,7 +147,7 @@ function onLoad() {
 
     profileContentDivEl = document.getElementById('profile-content');
 
-    couponContentDivEl = document.getElementById('coupon-content');
+    couponContentDivEl = document.getElementById('all-coupon-content');
     couponsContentDivEl = document.getElementById('coupons-content');
 
     backToProfileContentDivEl = document.getElementById('back-to-profile-content');
