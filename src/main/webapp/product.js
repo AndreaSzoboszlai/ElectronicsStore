@@ -9,7 +9,7 @@ function onAllProductsClicked() {
 
 function onAllProductsLoad() {
     showContentById('all-products-content-title');
-    allProductsEl.style.display = 'block';
+    showContents(['all-products-content']);
     if (this.status === OK) {
         const products = JSON.parse(this.responseText);
         creteProductTable(products);
@@ -22,6 +22,7 @@ function creteProductTable(products) {
     //hideContentById(mainContentEl);
     mainContentEl.style.display = 'none';
     removeAllChildren(allProductsEl);
+    removeAllChildren(addProductContentEl);
     const tableEl = document.createElement('table');
     tableEl.setAttribute('id', 'all-product-table');
     const theadEl = createProductTableHeader();

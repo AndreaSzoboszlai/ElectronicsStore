@@ -8,14 +8,13 @@ let loginContentDivEl;
 let profileContentDivEl;
 let couponContentDivEl;
 let couponsContentDivEl;
-let shopContentDivEl;
-let shopsContentDivEl;
 let backToProfileContentDivEl;
 let logoutContentDivEl;
 let menuListEl;
 let mainContentEl;
 let loginTitleEl;
 let allProductsEl;
+let addProductContentEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -134,6 +133,7 @@ function onLoad() {
     menuListEl = document.getElementById('menu-list');
     mainContentEl = document.getElementById('main-content');
     loginContentDivEl = document.getElementById('login-content');
+    addProductContentEl = document.getElementById('add-products-content');
 
     loginTitleEl = document.getElementById('login-title');
 

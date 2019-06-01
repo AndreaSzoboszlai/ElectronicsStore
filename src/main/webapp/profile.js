@@ -13,3 +13,7 @@ function onProfileLoad(user) {
     showContents(['container', 'login-form', 'logout-content']);
     loginTitleEl.textContent = 'Logged in';
 }
+
+function onProfileClicked() {
+    console.log('profile');
+}
