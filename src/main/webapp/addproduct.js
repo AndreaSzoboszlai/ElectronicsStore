@@ -1,4 +1,5 @@
 function onAddProductClicked() {
+    hideContentById('main-content');
     removeAllChildren(addProductContentEl);
     showContents(['add-products-content']);
     createNewProductForm();

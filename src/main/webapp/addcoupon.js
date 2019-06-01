@@ -1,4 +1,5 @@
 function onAddCouponClicked() {
+    hideContentById('main-content');
     removeAllChildren(couponContentDivEl);
     showContents(['all-coupon-content']);
     createNewCouponForm();

@@ -8,7 +8,7 @@ function onAllProductsClicked() {
 }
 
 function onAllProductsLoad() {
-    showContentById('all-products-content-title');
+
     showContents(['all-products-content']);
     if (this.status === OK) {
         const products = JSON.parse(this.responseText);
