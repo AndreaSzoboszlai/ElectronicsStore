@@ -29,4 +29,21 @@ public class ProductServlet extends AbstractServlet {
             sendMessage(response, HttpServletResponse.SC_BAD_REQUEST, ex);
         }
     }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            ProductDao productDao = new DatabaseProductDao(connection);
+            ProductService productService = new SimpleProductService(productDao);
+
+            String name = request.getParameter("product-name");
+            int price = Integer.valueOf(request.getParameter("product-price"));
+            String description = request.getParameter("product-description");
+            int stock = Integer.valueOf(request.getParameter("product-stock"));
+
+            productService.addProduct(name, price, description, stock);
+            sendMessage(response, HttpServletResponse.SC_OK, "Product added");
+        } catch (SQLException ex) {
+            sendMessage(response, HttpServletResponse.SC_BAD_REQUEST, ex);
+        }
+    }
 }
