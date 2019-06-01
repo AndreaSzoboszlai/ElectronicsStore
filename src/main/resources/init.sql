@@ -109,29 +109,15 @@ create trigger order_stock_check
     before insert on orders_products
     for each row EXECUTE procedure check_order_stock();
 
-create or replace function increase_product_count() RETURNS trigger AS '
-    BEGIN
-		DECLARE
-			id integer;
-		BEGIN
-			SELECT product_id INTO id FROM basket WHERE basket_id = NEW.basket.id;
-			IF id = NEW.product_id THEN
-				UPDATE basket SET quantity_ordered = quantityordered + 1 WHERE basket_id = NEW.basket_id;
-			END IF;
-		END;
-        RETURN NEW;
-    END;
-' LANGUAGE plpgsql;
 
-create trigger check_duplicates_in_cart
-    before insert on carts
-    for each row EXECUTE procedure increase_product_count();
 
+-- USERS table
 INSERT INTO users(user_name, user_email, user_password, user_role) VALUES
 	('a', 'a', '1000:52a2e5376fe9155814775f1e3231a526:191ade9da2dcbabfc870ba70263b7af6865b40d8e179d19e8ea504d257810c6e78a316d77f5bd8716a7fa54f39b1f082c773ca80b45526dd59c933522e341216', 'EMPLOYEE'),
 	('r', 'r', '1000:12b64240b3c5da1f64daa0d26dbd7bfb:e314534adbb83fa0d605557a1d7394f6936b10efcfc89cae85260e69ad452241cbdd6d043ae51ecc92e8776b4aa369fa6afb028cac5254f9cc7a4e8eae0722c2', 'CUSTOMER'),
 	('c', 'c', '1000:12b64240b3c5da1f64daa0d26dbd7bfb:e314534adbb83fa0d605557a1d7394f6936b10efcfc89cae85260e69ad452241cbdd6d043ae51ecc92e8776b4aa369fa6afb028cac5254f9cc7a4e8eae0722c2', 'CUSTOMER');
 
+-- PRODUCTS table
 INSERT INTO products(product_name, product_price, product_description, product_number_stock) VALUES
 	('HP - ENVY x360 2-in-1', 220, 'Improve productivity with this laptop.', 10),  				--1
 	('HP - Chromebook', 300, 'ChromeBook', 6),  												--2
@@ -140,23 +126,35 @@ INSERT INTO products(product_name, product_price, product_description, product_n
 	('HP - Pavilion x360 2-in-1', 600, 'HP Pavilion x360 Convertible 2-in-1 Laptop.', 2),  		--5
 	('Microsoft - Surface Book 2', 1300, 'HP Pavilion x360 Convertible 2-in-1 Laptop.', 1);  	--6
 
+-- ORDERS table
 INSERT INTO orders(ordered_total_price, user_id) VALUES
-	(50000, 2),
-	(60000, 2),
-	(60000, 3),
-	(60000, 3),
-	(60000, 3);
+	(2140, 2),		--1
+	(1520, 2);		--2
 
+
+-- ORDER_PRODUCTS table
 INSERT INTO orders_products(order_id, quantity_ordered, product_id) VALUES
-	(1, 1, 1),
-	(1, 1, 2),
-	(1, 1, 3),
-	(1, 1, 4),
-	(1, 1, 1),
-	(2, 1, 1),
-	(2, 1, 2),
-	(2, 1, 3);
+	(1, 1, 1),		--1
+	(1, 1, 2),		--2
+	(1, 1, 3),		--3
+	(1, 1, 4),		--4
+	(1, 1, 1),		--5
+	(2, 1, 1),		--6
+	(2, 1, 2),		--7
+	(2, 1, 3);		--8
 
+-- CARTS table
+INSERT INTO carts(total_price, user_id) VALUES
+	(220, 2),		--1
+	(300, 3);		--2
+
+-- CARTS_PRODUCTS table
+INSERT INTO carts_products(cart_id, quantity_ordered, product_id) VALUES
+	(1, 1, 1),
+	(2, 1, 2);
+
+-- COUPONS table
 INSERT INTO coupons(coupon_name, coupon_percent) VALUES
-	('Summer Sale', 20),
-	('June Sale', 15);
+	('Summer Sale', 20),		--1
+	('June Sale', 15);			--2
+
