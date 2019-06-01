@@ -23,12 +23,9 @@ public final class CouponsServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
             CouponDao couponDao = new DatabaseCouponDao(connection);
-
             CouponService couponService = new SimpleCouponService(couponDao);
-
-
-
-            sendMessage(resp, HttpServletResponse.SC_OK, "object");
+            List<Coupon> coupons = couponService.findAll();
+            sendMessage(resp, HttpServletResponse.SC_OK, coupons);
         } catch (SQLException ex) {
             handleSqlError(resp, ex);
         }
@@ -38,15 +35,13 @@ public final class CouponsServlet extends AbstractServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
             CouponDao couponDao = new DatabaseCouponDao(connection);
-
             CouponService couponService = new SimpleCouponService(couponDao);
 
-            String name = req.getParameter("name");
-            String percentage = req.getParameter("percentage");
+            String name = req.getParameter("couponName");
+            int percentage = Integer.valueOf(req.getParameter("couponPercentage"));
+            Coupon coupon = couponService.add(name, percentage);
 
-
-
-            sendMessage(resp, HttpServletResponse.SC_OK, "object");
+            sendMessage(resp, HttpServletResponse.SC_OK, "Coupon sucesfully added");
         } catch (SQLException ex) {
             handleSqlError(resp, ex);
         }
