@@ -269,6 +269,7 @@ section {
     background: linear-gradient(to right,#ED7198,#EC886E); //#7F435D
     margin: 0 auto;
     margin-top: 8px;
+    margin-bottom: 10px;
     border: 1px solid transparent;
     padding: 4px 20px;
     color: #ffffff;
@@ -295,4 +296,21 @@ section {
 
 .logout-content {
   display: none;
+}
+
+.logout-content {
+  display: block;
+}
+
+.content-title {
+    font: bold 24px/30px 'Brutal Type', sans-serif;
+    margin: 5px auto;
+    text-transform: uppercase;
+    padding-bottom: 15px;
+    text-align: center;
+    color: #8F2B62;
+}
+
+#all-products-content {
+    text-align: center;
 }

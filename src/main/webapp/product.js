@@ -8,10 +8,10 @@ function onAllProductsClicked() {
 }
 
 function onAllProductsLoad() {
+    showContentById('all-products-content-title');
     allProductsEl.style.display = 'block';
     if (this.status === OK) {
         const products = JSON.parse(this.responseText);
-        console.log(products);
         creteProductTable(products);
     } else {
         onOtherResponse(allProductsEl, this);
@@ -20,6 +20,7 @@ function onAllProductsLoad() {
 
 function creteProductTable(products) {
     //hideContentById(mainContentEl);
+    mainContentEl.style.display = 'none';
     removeAllChildren(allProductsEl);
     const tableEl = document.createElement('table');
     tableEl.setAttribute('id', 'all-product-table');
@@ -63,7 +64,7 @@ function createProductTableBody(products) {
         const nameAEl = document.createElement('a');
         nameAEl.href = 'javascript:void(0)';
         nameAEl.dataset.productId = product.id;
-        //nameAEl.onclick = onProductClicked;
+        nameAEl.onclick = onProductNameClicked;
         nameAEl.textContent = product.name;
         nameAEl.setAttribute('id', 'product-id' + product.id);
         nameTdEl.appendChild(nameAEl);
@@ -92,4 +93,47 @@ function createProductTableBody(products) {
         tbodyEl.appendChild(trEl);
     }
     return tbodyEl;
+}
+
+function onProductNameClicked() {
+    const productId = this.dataset.productId;
+    const params = new URLSearchParams();
+    params.append('productId', productId);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onProductNameResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/product?' + params.toString());
+    xhr.send();
+}
+function onProductNameResponse() {
+    if (this.status === OK) {
+        const product = JSON.parse(this.responseText);
+        onProductDescriptionResponse(product);
+    } else {
+        onOtherResponse(allProductsEl, this);
+    }
+}
+
+function onProductDescriptionResponse(product) {
+    removeAllChildren(allProductsEl);
+
+    const h2El = document.createElement('h2');
+    h2El.classList.add('small-title');
+    h2El.textContent = product.name;
+    hideContentById('all-products-content-title');
+    const pDEl = document.createElement('p');
+    pDEl.textContent = "Product description: " + product.description;
+    const buttonBackEl = createBackButton();
+    buttonBackEl.addEventListener('click', onAllProductsClicked);
+    allProductsEl.appendChild(h2El);
+    allProductsEl.appendChild(pDEl);
+    allProductsEl.appendChild(buttonBackEl);
+}
+
+function createBackButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Back';
+    return buttonEl;
 }

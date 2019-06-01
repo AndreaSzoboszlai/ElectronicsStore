@@ -10,6 +10,7 @@ function onLogoutResponse() {
     if (this.status === OK) {
         const response = JSON.parse(this.responseText);
         alert(response.message);
+        mainContentEl.style.display = 'block';
         onLoad();
     } else {
         const contentEls = document.getElementsByClassName('content');

@@ -161,11 +161,9 @@ function onLoad() {
 
     if (hasAuthorization()) {
         onProfileLoad(getCurrentUser());
-        hideContentById('main-content');
     } else {
         hideMenu();
-        showContents(['container', 'login-content']);
-        showContentById('main-content');
+        showContents(['container', 'login-content']);S
     }
 }
 
