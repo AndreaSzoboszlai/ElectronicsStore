@@ -3,10 +3,12 @@
 <head>
     <title>Page Title</title>
     <link rel="stylesheet" type="text/css" href="TemplateForMyself_text.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <script src="index.js"></script>
     <script src="login.js"></script>
     <script src="logout.js"></script>
     <script src="profile.js"></script>
+    <script src="product.js"></script>
 </head>
     <body>
 
@@ -19,7 +21,7 @@
                     <a href="javascript:void(0)" onclick="onAddProductClicked()" id="link-add-product" class="menu-link">AddProduct<span class="menu-line"></span></a>
                 </li>
                 <li class="menu-item">
-                    <a href="javascript:void(0)" onclick="onAllProducts()" id="link-all-products" class="menu-link">All Product<span class="menu-line"></span></a>
+                    <a href="javascript:void(0)" onclick="onAllProductsClicked()" id="link-all-products" class="menu-link">All Product<span class="menu-line"></span></a>
                 </li>
                 <li class="menu-item">
                     <a href="javascript:void(0)" onclick="onCartClicked()" id="link-cart" class="menu-link">My Cart<span class="menu-line"></span></a>
@@ -43,7 +45,7 @@
                     <div class="containerhead">
                         <div class="title"><a href="">Home</a></div>
                     </div>
-                    <div class="main-content">
+                    <div id="main-content" class="main-content">
                         <h1>Welcome on our page!</h1>
                         <p>Here you can find the best product!</p>
                         <p>Please register or log in to browse and buy products.</p>

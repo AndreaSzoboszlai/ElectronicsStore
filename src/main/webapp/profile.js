@@ -1,8 +1,8 @@
-
+let role;
 
 function onProfileLoad(user) {
     clearMessages();
-    console.log(user.userRole);
+    role = user.userRole;
     if (user.userRole === "EMPLOYEE") {
       showContentById('link-add-product');
       showMenu();
@@ -12,6 +12,4 @@ function onProfileLoad(user) {
     }
     showContents(['container', 'login-form', 'logout-content']);
     loginTitleEl.textContent = 'Logged in';
-
-
 }
