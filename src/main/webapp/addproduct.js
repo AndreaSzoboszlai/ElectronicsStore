@@ -36,8 +36,7 @@ function createNewProductForm() {
     inputStEl.setAttribute("name","product-stock");
 
     const brEl = document.createElement("br");
-
-    const sEl = createNewSubmitButton();
+    const sEl = createNewPrSubmitButton();
     sEl.addEventListener('click', onSubmitNewProduct);
 
     formEl.appendChild(inputNaEl);
@@ -48,11 +47,9 @@ function createNewProductForm() {
     formEl.appendChild(sEl);
 
     addProductContentEl.appendChild(formEl);
-
-
 }
 
-function createNewSubmitButton() {
+function createNewPrSubmitButton() {
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'new-product-button');
     buttonEl.setAttribute('type', 'button');

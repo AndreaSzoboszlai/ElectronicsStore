@@ -205,7 +205,7 @@ function createProductEmployeeTableBody(products) {
         const buttonUpTdEl = document.createElement('i');
         buttonUpTdEl.classList.add('icon-edit')
         buttonUpTdEl.dataset.productEdit = product.id;
-        //buttonCartTdEl.addEventListener('click', onProductEditClicked);
+        buttonUpTdEl.addEventListener('click', onProductEditClicked);
         const buttonUpdateTdEl = document.createElement('td');
         buttonUpdateTdEl.appendChild(buttonUpTdEl);
         buttonUpdateTdEl.setAttribute('id', 'product-update-button-' + product.id);
@@ -229,6 +229,127 @@ function createProductEmployeeTableBody(products) {
         tbodyEl.appendChild(trEl);
     }
     return tbodyEl;
+}
+
+function onProductEditClicked() {
+    const productEdit = this.dataset.productEdit;
+    const params = new URLSearchParams();
+    params.append('productId', productEdit);
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onProductEditResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/product?' + params.toString());
+    xhr.send();
+}
+
+function onProductEditResponse() {
+    if (this.status === OK) {
+        const product = JSON.parse(this.responseText);
+        createProductEditForm(product);
+    } else {
+        onOtherResponse(allProductsEl, this);
+    }
+}
+
+function createProductEditForm(product) {
+    removeAllChildren(allProductsEl);
+    const formEl = document.createElement('form');
+    formEl.setAttribute('id','new-product-form');
+    formEl.classList.add('menu-form');
+    formEl.onSubmit = 'return false;';
+
+    const inputidEl = document.createElement("input"); //input element, text
+    inputidEl.setAttribute("type","text");
+    inputidEl.classList.add("text-input");
+    inputidEl.value = product.id;
+    inputidEl.readOnly = true;
+    inputidEl.setAttribute("name","product-id");
+
+    const inputNaEl = document.createElement("input"); //input element, text
+    inputNaEl.setAttribute("type","text");
+    inputNaEl.classList.add("text-input");
+    inputNaEl.value = product.name;
+    inputNaEl.setAttribute("name","product-name");
+
+    const inputPrEl = document.createElement("input"); //input element, text
+    inputPrEl.setAttribute("type","text");
+    inputPrEl.classList.add("text-input");
+    inputPrEl.value = product.price;
+    inputPrEl.setAttribute("name","product-price");
+
+    const inputDEl = document.createElement("input"); //input element, text
+    inputDEl.setAttribute("type","text");
+    inputDEl.classList.add("text-input");
+    inputDEl.value = product.description;
+    inputDEl.setAttribute("name","product-description");
+
+    const inputStEl = document.createElement("input"); //input element, text
+    inputStEl.setAttribute("type","text");
+    inputStEl.classList.add("text-input");
+    inputStEl.value = product.productInStock;
+    inputStEl.setAttribute("name","product-stock");
+
+    const brEl = document.createElement("br");
+    const sEl = createEditSubmitButton();
+    sEl.addEventListener('click', onUpdateProductSubmit);
+    formEl.appendChild(inputidEl);
+    formEl.appendChild(inputNaEl);
+    formEl.appendChild(inputPrEl);
+    formEl.appendChild(inputDEl);
+    formEl.appendChild(inputStEl);
+    formEl.appendChild(brEl);
+    formEl.appendChild(sEl);
+
+    allProductsEl.appendChild(formEl);
+}
+
+function createEditSubmitButton() {
+    const buttonEl = document.createElement('button');
+    buttonEl.setAttribute('id', 'new-edit-product-button');
+    buttonEl.setAttribute('type', 'button');
+    buttonEl.classList.add('form-button');
+    buttonEl.textContent = 'Edit product';
+    return buttonEl;
+}
+
+function onUpdateProductSubmit() {
+    const newProductFormEl = document.forms['new-product-form'];
+    const idInput = newProductFormEl.querySelector('input[name="product-id"]');
+    const nameInput = newProductFormEl.querySelector('input[name="product-name"]');
+    const priceInput = newProductFormEl.querySelector('input[name="product-price"]');
+    const descInput = newProductFormEl.querySelector('input[name="product-description"]');
+    const stockInput = newProductFormEl.querySelector('input[name="product-stock"]');
+    removeAllChildren(addProductContentEl);
+    const id =idInput.value;
+    const name = nameInput.value;
+    const price = priceInput.value;
+    const desc = descInput.value;
+    const stock = stockInput.value;
+
+    const data = {};
+    data.id = id;
+    data.name = name;
+    data.price = price;
+    data.description = desc;
+    data.productInStock = stock;
+    const json = JSON.stringify(data);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onSubmittedUpdatedProduct);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'protected/product');
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+    xhr.send(json);
+}
+
+function onSubmittedUpdatedProduct() {
+    if (this.status === OK) {
+        const product = JSON.parse(this.responseText);
+        alert(product.message);
+        onAllProductsClicked();
+    } else {
+        onOtherResponse(addProductContentEl, this);
+    }
 }
 
 function onProductDelClicked() {
