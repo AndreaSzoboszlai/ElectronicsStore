@@ -68,10 +68,11 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
     public void addCartProductRelation(int cartId, int productId) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
-        String sql = "INSERT INTO carts_products(cart_id, product_id) VALUES (?, ?)";
+        String sql = "INSERT INTO carts_products(cart_id, quantity_ordered, product_id) VALUES (?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, cartId);
-            preparedStatement.setInt(2, productId);
+            preparedStatement.setInt(2,1);
+            preparedStatement.setInt(3, productId);
             executeInsert(preparedStatement);
             connection.commit();
         } catch (SQLException ex) {
@@ -96,12 +97,57 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         return false;
     }
 
+    public ProductsInCartDto getCartSingleDto(int id) throws SQLException {
+        String sql = "SELECT products.product_id, product_name, product_price, quantity_ordered, total_price FROM products JOIN (SELECT carts.user_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return fetchProducts(resultSet);
+                }
+            }
+        }
+        return null;
+    }
+
+    public void updateProductCount(int quantity, int prodId, int cartId) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE carts_products SET quantity_ordered = ? WHERE product_id = ? AND cart_id = ? ";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, prodId);
+            preparedStatement.setInt(3, cartId);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException exc) {
+            connection.rollback();
+            throw exc;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    public boolean doesProductInCartUserRelationExists(int userId, int prodId) throws SQLException {
+        String sql = "SELECT quantity_ordered FROM products JOIN (SELECT carts.user_id, carts.cart_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id = ? AND product_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, prodId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private ProductsInCartDto fetchProducts(ResultSet resultSet) throws SQLException {
         int productId = resultSet.getInt("product_id");
         String name = resultSet.getString("product_name");
         int price = resultSet.getInt("product_price");
         int quantity = resultSet.getInt("quantity_ordered");
         int totalPrice = resultSet.getInt("total_price");
-        return new ProductsInCartDto(productId, name, price, quantity, totalPrice);
+        return new ProductsInCartDto(productId, name, price, quantity);
     }
 }

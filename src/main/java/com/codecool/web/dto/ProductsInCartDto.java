@@ -7,12 +7,12 @@ public class ProductsInCartDto {
     private int price;
     private int totalPrice;
 
-    public ProductsInCartDto(int productId, String name, int price, int quantity, int totalPrice) {
+    public ProductsInCartDto(int productId, String name, int price, int quantity) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.totalPrice = totalPrice;
+        this.totalPrice = price * quantity;
     }
 
     public int getProductId() {

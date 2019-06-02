@@ -1,7 +1,9 @@
 package com.codecool.web.service.simple;
 
 import com.codecool.web.dao.CartDao;
+import com.codecool.web.dao.ProductDao;
 import com.codecool.web.dto.ProductsInCartDto;
+import com.codecool.web.dto.TotalDto;
 import com.codecool.web.model.Cart;
 import com.codecool.web.service.CartService;
 
@@ -29,8 +31,19 @@ public class SimpleCartService implements CartService {
             return cart;
         } else {
             Cart cart = cartDao.findCartByUserId(userId);
-            cartDao.addCartProductRelation(cart.getId(), productId);
+            if (cartDao.doesProductInCartUserRelationExists(userId, productId)) {
+                int newCount = cartDao.getCartSingleDto(userId).getQuantity() + 1;
+                cartDao.updateProductCount(newCount, productId, cart.getId());
+
+            } else {
+                cartDao.addCartProductRelation(cart.getId(), productId);
+            }
+            return cart;
         }
-        return null;
+    }
+
+    public int countTotalByCart(int id) throws SQLException {
+        TotalDto totalDto = new TotalDto(cartDao.findCartByUser(id));
+        return totalDto.getTotal();
     }
 }
