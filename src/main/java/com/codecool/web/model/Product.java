@@ -16,6 +16,10 @@ public class Product extends AbstractModel {
         this.productInStock = productInStock;
     }
 
+    public Product() {
+
+    }
+
     public String getName() {
         return name;
     }
