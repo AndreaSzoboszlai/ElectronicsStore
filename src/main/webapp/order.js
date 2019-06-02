@@ -36,7 +36,7 @@ function createOrdersTableHead() {
     priceTdEl.textContent = 'Total Price'
 
     const statusTdEl = document.createElement('th');
-    statusTdEl.textContent = 'Order Status';
+    statusTdEl.textContent = 'Has shipped';
 
     const trTdEl = document.createElement('tr');
     trTdEl.appendChild(numTdEl);
