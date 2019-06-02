@@ -213,7 +213,7 @@ function createProductEmployeeTableBody(products) {
         const buttonDelTdEl = document.createElement('i');
         buttonDelTdEl.classList.add('icon-trash')
         buttonDelTdEl.dataset.productDel = product.id;
-        //buttonCartTdEl.addEventListener('click', onProductDelClicked);
+        buttonDelTdEl.addEventListener('click', onProductDelClicked);
         const buttonDeleteTdEl = document.createElement('td');
         buttonDeleteTdEl.appendChild(buttonDelTdEl);
         buttonDeleteTdEl.setAttribute('id', 'product-delete-button-' + product.id);
@@ -229,4 +229,27 @@ function createProductEmployeeTableBody(products) {
         tbodyEl.appendChild(trEl);
     }
     return tbodyEl;
+}
+
+function onProductDelClicked() {
+    const productDel = this.dataset.productDel;
+
+    const params = new URLSearchParams();
+    params.append('del-id', productDel);
+
+    const xhr = new XMLHttpRequest()
+    xhr.addEventListener('load', onProductDeleteResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/product?' + params.toString());
+    xhr.send();
+}
+
+function onProductDeleteResponse() {
+    if (this.status === OK) {
+        const response = JSON.parse(this.responseText);
+        alert(response.message);
+        onAllProductsClicked();
+    } else {
+        onOtherResponse(allProductsEl, this);
+    }
 }

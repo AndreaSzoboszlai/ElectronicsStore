@@ -63,6 +63,50 @@ public final class DatabaseProductDao extends AbstractDao implements ProductDao 
         }
     }
 
+    @Override
+    public void deleteProduct(int id) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "DELETE FROM products WHERE product_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException exc) {
+            connection.rollback();
+            throw exc;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public boolean doesProductExistInCart(int id) throws SQLException {
+        String sql = "SELECT * FROM carts_products WHERE product_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean doesProductExistInOrder(int id) throws SQLException {
+        String sql = "SELECT * FROM orders_products WHERE product_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     private Product fetchProduct(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("product_id");

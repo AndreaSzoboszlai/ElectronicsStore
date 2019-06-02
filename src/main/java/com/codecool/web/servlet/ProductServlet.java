@@ -4,6 +4,7 @@ import com.codecool.web.dao.ProductDao;
 import com.codecool.web.dao.database.DatabaseProductDao;
 import com.codecool.web.model.Product;
 import com.codecool.web.service.ProductService;
+import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.simple.SimpleProductService;
 
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 public class ProductServlet extends AbstractServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
             ProductDao productDao = new DatabaseProductDao(connection);
             ProductService productService = new SimpleProductService(productDao);
@@ -44,6 +45,21 @@ public class ProductServlet extends AbstractServlet {
             sendMessage(response, HttpServletResponse.SC_OK, "Product added");
         } catch (SQLException ex) {
             sendMessage(response, HttpServletResponse.SC_BAD_REQUEST, ex);
+        }
+    }
+
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            ProductDao productDao = new DatabaseProductDao(connection);
+            ProductService productService = new SimpleProductService(productDao);
+
+            int id = Integer.valueOf(request.getParameter("del-id"));
+            productService.deleteProduct(id);
+            sendMessage(response, HttpServletResponse.SC_OK, "Product deleted");
+        } catch ( SQLException ex) {
+            handleSqlError(response, ex);
+        } catch (ServiceException ex) {
+            sendMessage(response, HttpServletResponse.SC_OK, ex);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.codecool.web.service;
 
 import com.codecool.web.model.Product;
+import com.codecool.web.service.exception.ServiceException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,4 +14,6 @@ public interface ProductService {
     Product findById(int id) throws SQLException;
 
     Product addProduct(String name, int price, String description, int productInStock) throws SQLException;
+
+    void deleteProduct(int id) throws SQLException, ServiceException;;
 }

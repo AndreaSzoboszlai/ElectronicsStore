@@ -25,7 +25,7 @@ public final class CouponServlet extends AbstractServlet {
         try (Connection connection = getConnection(request.getServletContext())) {
             CouponDao couponDao = new DatabaseCouponDao(connection);
             CouponService couponService = new SimpleCouponService(couponDao);
-
+            //haven't used yet
             int id = Integer.valueOf(request.getParameter("coupon-id"));
             Coupon coupon = couponService.findById(id);
             sendMessage(response, HttpServletResponse.SC_OK, coupon);
