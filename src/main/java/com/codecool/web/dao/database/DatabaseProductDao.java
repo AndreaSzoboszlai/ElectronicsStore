@@ -108,6 +108,27 @@ public final class DatabaseProductDao extends AbstractDao implements ProductDao 
         return false;
     }
 
+    @Override
+    public void updateProductDetails(int id, String name, int price, String description, int stock) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE products SET product_name = ?, product_price = ?, product_description = ?, product_number_stock = ? WHERE product_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, price);
+            preparedStatement.setString(3, description);
+            preparedStatement.setInt(4, stock);
+            preparedStatement.setInt(5, id);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException exc) {
+            connection.rollback();
+            throw exc;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
     private Product fetchProduct(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("product_id");
         String name = resultSet.getString("product_name");

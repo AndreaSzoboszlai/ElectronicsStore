@@ -5,7 +5,6 @@ import com.codecool.web.model.Product;
 import com.codecool.web.service.ProductService;
 import com.codecool.web.service.exception.ServiceException;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class SimpleProductService implements ProductService {
     @Override
     public void deleteProduct(int id) throws SQLException, ServiceException {
         if (productDao.doesProductExistInCart(id)) {
-            throw new ServiceException("Product already is somene's cart you can't delete it");
+            throw new ServiceException("Product already is someone's cart you can't delete it");
         }
 
         if (productDao.doesProductExistInOrder(id)) {
@@ -43,5 +42,10 @@ public class SimpleProductService implements ProductService {
         }
         productDao.deleteProduct(id);
 
+    }
+
+    @Override
+    public void updateProductDetails(int id, String name, int price, String description, int stock) throws SQLException {
+        productDao.updateProductDetails(id, name, price, description, stock);
     }
 }

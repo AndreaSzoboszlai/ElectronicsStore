@@ -18,4 +18,6 @@ public interface ProductDao {
     boolean doesProductExistInCart(int id) throws SQLException;
 
     boolean doesProductExistInOrder(int id) throws SQLException;
+
+    void updateProductDetails(int id, String name, int price, String description, int stock) throws SQLException;
 }
