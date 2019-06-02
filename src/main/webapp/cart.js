@@ -12,7 +12,6 @@ function onCartLoad() {
         showContents(['my-cart-content']);
         removeAllChildren(cartContentDivEl);
         const cartDto = JSON.parse(this.responseText);
-        console.log(cartDto);
         createCartDisplay(cartDto);
     } else {
         onOtherResponse(cartContentDivEl, this);

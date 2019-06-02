@@ -3,11 +3,9 @@ package com.codecool.web.dao.database;
 import com.codecool.web.dao.CartDao;
 import com.codecool.web.dto.ProductsInCartDto;
 import com.codecool.web.model.Cart;
+import com.codecool.web.model.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +28,72 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
             }
         }
         return productsInCart;
+    }
+
+    public Cart findCartByUserId(int userId) throws SQLException {
+        String sql = "SELECT * FROM carts WHERE user_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int cartId = resultSet.getInt("cart_id");
+                    int userOwnId = resultSet.getInt("user_id");
+                    return new Cart(cartId, userOwnId);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Cart addCart(int userId) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO carts (user_id) VALUES (?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setInt(1, userId);
+            executeInsert(preparedStatement);
+            int id = fetchGeneratedId(preparedStatement);
+            connection.commit();
+            return new Cart(id, userId);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public void addCartProductRelation(int cartId, int productId) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO carts_products(cart_id, product_id) VALUES (?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, cartId);
+            preparedStatement.setInt(2, productId);
+            executeInsert(preparedStatement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public boolean doUserAlreadyHaveCart(int userId) throws SQLException {
+        String sql = "SELECT * FROM carts WHERE user_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private ProductsInCartDto fetchProducts(ResultSet resultSet) throws SQLException {

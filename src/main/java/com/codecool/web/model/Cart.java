@@ -7,6 +7,7 @@ import java.util.Objects;
 public class Cart extends AbstractModel{
     private int totalPrice;
     private int cartDiscount;
+    private int userId;
     private Map<Product, Integer> productsInCart;
 
     public Cart(int id, int totalPrice, int cartDiscount) {
@@ -16,12 +17,21 @@ public class Cart extends AbstractModel{
         this.cartDiscount = cartDiscount;
     }
 
+    public Cart(int id, int userId) {
+        super(id);
+        this.userId = userId;
+    }
+
     public int getTotalPrice() {
         return totalPrice;
     }
 
     public int getCartDiscount() {
         return cartDiscount;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     @Override

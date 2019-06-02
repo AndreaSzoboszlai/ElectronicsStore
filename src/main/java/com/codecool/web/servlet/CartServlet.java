@@ -30,4 +30,18 @@ public class CartServlet extends AbstractServlet {
             handleSqlError(response, ex);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            CartDao cartDao = new DatabaseCartDao(connection);
+            CartService cartService = new SimpleCartService(cartDao);
+            User user = (User) request.getSession().getAttribute("user");
+            int id = Integer.valueOf(request.getParameter("product-id"));
+            cartService.addCart(user.getId(), id);
+            sendMessage(response, HttpServletResponse.SC_OK, "Product added to cart");
+        } catch (SQLException ex) {
+            handleSqlError(response, ex);
+        }
+    }
 }

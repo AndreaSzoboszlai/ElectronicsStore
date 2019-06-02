@@ -110,7 +110,6 @@ create trigger order_stock_check
     for each row EXECUTE procedure check_order_stock();
 
 
-
 -- USERS table
 INSERT INTO users(user_name, user_email, user_password, user_role) VALUES
 	('a', 'a', '1000:52a2e5376fe9155814775f1e3231a526:191ade9da2dcbabfc870ba70263b7af6865b40d8e179d19e8ea504d257810c6e78a316d77f5bd8716a7fa54f39b1f082c773ca80b45526dd59c933522e341216', 'EMPLOYEE'),

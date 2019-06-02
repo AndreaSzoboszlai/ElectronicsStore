@@ -82,7 +82,7 @@ function createProductCustomerTableBody(products) {
         const buttonCartTdEl = document.createElement('i');
         buttonCartTdEl.classList.add('icon-shopping-cart')
         buttonCartTdEl.dataset.productCart = product.id;
-        //buttonCartTdEl.addEventListener('click', onProductCartClicked);
+        buttonCartTdEl.addEventListener('click', onProductCartClicked);
         const buttonTdEl = document.createElement('td');
         buttonTdEl.appendChild(buttonCartTdEl);
         buttonTdEl.setAttribute('id', 'product-update-button-' + product.id);
@@ -229,6 +229,26 @@ function createProductEmployeeTableBody(products) {
         tbodyEl.appendChild(trEl);
     }
     return tbodyEl;
+}
+function onProductCartClicked() {
+    const productId = this.dataset.productCart;
+    const params = new URLSearchParams();
+    params.append('product-id', productId);
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onCartPutClicked);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/cart');
+    xhr.send(params);
+}
+
+function onCartPutClicked() {
+    if (this.status === OK) {
+        const message = JSON.parse(this.responseText);
+        alert(message.message);
+        onAllProductsClicked();
+    } else {
+        onOtherResponse(allProductsEl, this);
+    }
 }
 
 function onProductEditClicked() {
