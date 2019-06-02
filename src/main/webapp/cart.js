@@ -29,6 +29,7 @@ function createCartDisplay(cartDto) {
     cartContentDivEl.appendChild(tableEl);
     createCouponForm();
     const buttonTdEl = createNewOrderButton();
+    //buttonTdEl.addEventListener('click', onSubmitOrder);
     cartContentDivEl.appendChild(buttonTdEl);
 }
 function createNewOrderButton() {
@@ -85,7 +86,7 @@ function createCartTableBody(cartDto) {
         const buttonCartTdEl = document.createElement('i');
         buttonCartTdEl.classList.add('icon-trash');
         buttonCartTdEl.dataset.productCart = product.id;
-        //buttonCartTdEl.addEventListener('click', onCartProductDeleteClicked);
+        //buttonCartTdEl.addEventListener('click', onDeleteFromCart);
         const buttonTdEl = document.createElement('td');
         buttonTdEl.appendChild(buttonCartTdEl);
         buttonTdEl.setAttribute('id', 'cart-delete-button-' + product.id);
@@ -118,8 +119,8 @@ function createCouponForm() {
 
     const brEl = document.createElement("br");
 
-    const sEl = createNewSubmitButton();
-    sEl.addEventListener('click', onSubmitNewProduct);
+    const sEl = createNewCartSubmitButton();
+    //sEl.addEventListener('click', onCouponUse);
     formEl.appendChild(inputNaEl);
     formEl.appendChild(brEl);
     formEl.appendChild(sEl);
@@ -127,9 +128,9 @@ function createCouponForm() {
     cartContentDivEl.appendChild(formEl);
 }
 
-function createNewSubmitButton() {
+function createNewCartSubmitButton() {
     const buttonEl = document.createElement('button');
-    buttonEl.setAttribute('id', 'add-coupon-button');
+    buttonEl.setAttribute('id', 'add-cart-button');
     buttonEl.setAttribute('type', 'button');
     buttonEl.classList.add('form-button');
     buttonEl.textContent = 'Add coupon to cart';

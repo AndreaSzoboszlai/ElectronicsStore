@@ -24,9 +24,8 @@ function createNewCouponForm() {
     inputPrEl.setAttribute("name","coupon-percentage");
 
     const brEl = document.createElement("br");
-
-    const sEl = createNewSubmitButton();
-    sEl.addEventListener('click', onSubmitNewProduct);
+    const sEl = createNewCouponSubmitButton();
+    sEl.addEventListener('click', onSubmitNewCoupon);
 
     formEl.appendChild(inputNaEl);
     formEl.appendChild(inputPrEl);
@@ -36,7 +35,7 @@ function createNewCouponForm() {
     couponContentDivEl.appendChild(formEl);
 }
 
-function createNewSubmitButton() {
+function createNewCouponSubmitButton() {
     const buttonEl = document.createElement('button');
     buttonEl.setAttribute('id', 'new-coupon-button');
     buttonEl.setAttribute('type', 'button');
@@ -45,7 +44,7 @@ function createNewSubmitButton() {
     return buttonEl;
 }
 
-function onSubmitNewProduct() {
+function onSubmitNewCoupon() {
     const newProductFormEl = document.forms['new-coupon-form'];
     const nameInput = newProductFormEl.querySelector('input[name="coupon-name"]');
     const percentageInput = newProductFormEl.querySelector('input[name="coupon-percentage"]');
