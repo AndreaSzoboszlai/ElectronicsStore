@@ -22,10 +22,16 @@ function createCartDisplay(cartDto) {
     const tableEl = document.createElement('table');
     tableEl.setAttribute('id', 'my-cart-table');
     const theadEl = createCartTableHead();
-    const tbodyEl = createCartTableBody(cartDto);
+    console.log(cartDto.productsInCart);
+    const cartList = cartDto.productsInCart
+    const tbodyEl = createCartTableBody(cartList);
     tableEl.appendChild(theadEl);
     tableEl.appendChild(tbodyEl);
     cartContentDivEl.appendChild(tableEl);
+    const pEl = document.createElement('p');
+    const nEl = document.createTextNode("Total Price: $ " + cartDto.total);
+    pEl.appendChild(nEl);
+    cartContentDivEl.appendChild(pEl);
     createCouponForm();
     const buttonTdEl = createNewOrderButton();
     //buttonTdEl.addEventListener('click', onSubmitOrder);

@@ -3,6 +3,7 @@ package com.codecool.web.servlet;
 import com.codecool.web.dao.CartDao;
 import com.codecool.web.dao.database.DatabaseCartDao;
 import com.codecool.web.dto.ProductsInCartDto;
+import com.codecool.web.dto.TotalDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.CartService;
 import com.codecool.web.service.simple.SimpleCartService;
@@ -24,8 +25,9 @@ public class CartServlet extends AbstractServlet {
             CartDao cartDao = new DatabaseCartDao(connection);
             CartService cartService = new SimpleCartService(cartDao);
             User user = (User) request.getSession().getAttribute("user");
-            List<ProductsInCartDto> productsInCartDto = cartService.findCartByUser(user.getId());
-            sendMessage(response, HttpServletResponse.SC_OK, productsInCartDto);
+            List<ProductsInCartDto> products = cartService.findCartByUser(user.getId());
+            TotalDto totalDto = new TotalDto(products);
+            sendMessage(response, HttpServletResponse.SC_OK, totalDto);
         } catch (SQLException ex) {
             handleSqlError(response, ex);
         }

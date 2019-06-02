@@ -1,5 +1,6 @@
 package com.codecool.web.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TotalDto {
@@ -13,8 +14,12 @@ public class TotalDto {
 
     public void countTotal() {
         for (ProductsInCartDto products : productsInCart) {
-            total += products.getPrice() * products.getQuantity();
+            total = total + products.getPrice() * products.getQuantity();
         }
+    }
+
+    public List<ProductsInCartDto> getProductsInCart() {
+        return productsInCart;
     }
 
     public int getTotal() {

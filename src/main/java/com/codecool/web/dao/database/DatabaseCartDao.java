@@ -147,7 +147,6 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         String name = resultSet.getString("product_name");
         int price = resultSet.getInt("product_price");
         int quantity = resultSet.getInt("quantity_ordered");
-        int totalPrice = resultSet.getInt("total_price");
         return new ProductsInCartDto(productId, name, price, quantity);
     }
 }
