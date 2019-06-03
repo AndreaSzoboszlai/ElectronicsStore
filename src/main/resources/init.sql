@@ -49,6 +49,7 @@ CREATE TABLE carts(
 CREATE TABLE carts_products(
 	cart_id integer,
 	quantity_ordered integer,
+	product_per_total integer,
 	product_id integer,
 	FOREIGN KEY (product_id) REFERENCES products(product_id),
 	FOREIGN KEY (cart_id) REFERENCES carts(cart_id)
@@ -148,9 +149,9 @@ INSERT INTO carts(total_price, user_id) VALUES
 	(300, 3);		--2
 
 -- CARTS_PRODUCTS table
-INSERT INTO carts_products(cart_id, quantity_ordered, product_id) VALUES
-	(1, 1, 1),
-	(2, 1, 2);
+INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product_id) VALUES
+	(1, 1, 220, 1),
+	(2, 1, 300, 2);
 
 -- COUPONS table
 INSERT INTO coupons(coupon_name, coupon_percent) VALUES

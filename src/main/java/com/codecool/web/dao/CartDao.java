@@ -20,7 +20,9 @@ public interface CartDao {
 
     ProductsInCartDto getCartSingleDto(int id) throws SQLException;
 
-    void updateProductCount(int quantity, int prodId, int cartId) throws SQLException;
+    public void updateProductCount(int quantity, int prodPrice, int prodId, int cartId) throws SQLException;
 
     boolean doesProductInCartUserRelationExists(int userId, int prodId) throws SQLException;
+
+    void updateTotalInCArt(int cartId, int total) throws SQLException;
 }

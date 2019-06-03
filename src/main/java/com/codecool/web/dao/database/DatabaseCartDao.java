@@ -110,14 +110,33 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         return null;
     }
 
-    public void updateProductCount(int quantity, int prodId, int cartId) throws SQLException {
+    public void updateProductCount(int quantity, int prodPrice, int prodId, int cartId) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
-        String sql = "UPDATE carts_products SET quantity_ordered = ? WHERE product_id = ? AND cart_id = ? ";
+        String sql = "UPDATE carts_products SET quantity_ordered = ?, product_per_total = ? WHERE product_id = ? AND cart_id = ? ";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, quantity);
-            preparedStatement.setInt(2, prodId);
-            preparedStatement.setInt(3, cartId);
+            preparedStatement.setInt(2, quantity * prodPrice);
+            preparedStatement.setInt(3, prodId);
+            preparedStatement.setInt(4, cartId);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException exc) {
+            connection.rollback();
+            throw exc;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+
+    public void updateTotalInCArt(int cartId, int total) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE carts SET total_price = ? WHERE cart_id = ? ";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, total);
+            preparedStatement.setInt(2, cartId);
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException exc) {
