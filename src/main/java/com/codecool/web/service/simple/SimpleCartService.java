@@ -13,9 +13,11 @@ import java.util.List;
 public class SimpleCartService implements CartService {
 
     private final CartDao cartDao;
+    private final ProductDao productDao;
 
-    public SimpleCartService(CartDao cartDao) {
+    public SimpleCartService(CartDao cartDao, ProductDao productDao) {
         this.cartDao = cartDao;
+        this.productDao = productDao;
     }
 
     @Override
@@ -25,6 +27,8 @@ public class SimpleCartService implements CartService {
 
     @Override
     public Cart addCart(int userId,int productId) throws SQLException {
+        int price = productDao.findById(productId).getPrice();
+
         if (!cartDao.doUserAlreadyHaveCart(userId)) {
             Cart cart = cartDao.addCart(userId);
             cartDao.addCartProductRelation(cart.getId(), cart.getUserId());
@@ -33,10 +37,11 @@ public class SimpleCartService implements CartService {
             Cart cart = cartDao.findCartByUserId(userId);
             if (cartDao.doesProductInCartUserRelationExists(userId, productId)) {
                 int newCount = cartDao.getCartSingleDto(userId).getQuantity() + 1;
-                cartDao.updateProductCount(newCount, productId, cart.getId());
-
+                cartDao.updateProductCount(newCount, price, productId, cart.getId());
             } else {
                 cartDao.addCartProductRelation(cart.getId(), productId);
+                int newCount = cartDao.getCartSingleDto(userId).getQuantity();
+                cartDao.updateProductCount(newCount, price, productId, cart.getId());
             }
             return cart;
         }
@@ -45,7 +50,6 @@ public class SimpleCartService implements CartService {
     public TotalDto getTotalDto(int id) throws SQLException {
         List<ProductsInCartDto> products = cartDao.findCartByUser(id);
         TotalDto totalDto = new TotalDto(products);
-        totalDto.getTotal();
         return totalDto;
     }
 }
