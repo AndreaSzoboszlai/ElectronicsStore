@@ -31,9 +31,9 @@ public class CartServlet extends AbstractServlet {
             CartDao cartDao = new DatabaseCartDao(connection);
             CartService cartService = new SimpleCartService(cartDao, productDao);
             User user = (User) request.getSession().getAttribute("user");
-            List<ProductsInCartDto> products = cartService.findCartByUser(user.getId());
-            TotalDto totalDto = new TotalDto(products, cartService.getTotalCartCost(user.getId()));
-            sendMessage(response, HttpServletResponse.SC_OK, cartService.getTotalDto(user.getId()));
+
+            TotalDto totalDto = cartService.getTotalDto(user.getId());
+            sendMessage(response, HttpServletResponse.SC_OK, totalDto);
         } catch (SQLException ex) {
             handleSqlError(response, ex);
         }
@@ -61,8 +61,9 @@ public class CartServlet extends AbstractServlet {
             ProductService productService = new SimpleProductService(productDao);
             CartDao cartDao = new DatabaseCartDao(connection);
             CartService cartService = new SimpleCartService(cartDao, productDao);
-
-            int id = Integer.valueOf(request.getParameter("del-prod-id"));
+            User user = (User) request.getSession().getAttribute("user");
+            int prodId = Integer.valueOf(request.getParameter("del-id"));
+            cartService.deleteProductFromCart(user.getId(), prodId);
             sendMessage(response, HttpServletResponse.SC_OK, "Product deleted from cart");
         } catch (SQLException ex) {
             handleSqlError(response, ex);

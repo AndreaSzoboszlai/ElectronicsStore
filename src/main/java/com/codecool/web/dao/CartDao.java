@@ -27,4 +27,6 @@ public interface CartDao {
     void updateTotalInCArt(int cartId, int total) throws SQLException;
 
     int getTotalCartCost(int userId) throws SQLException;
+
+    void deleteProductFromCart(int cartId, int prodId) throws SQLException;
 }

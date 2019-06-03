@@ -90,8 +90,8 @@ function createCartTableBody(cartDto) {
 
         const buttonCartTdEl = document.createElement('i');
         buttonCartTdEl.classList.add('icon-trash');
-        buttonCartTdEl.dataset.productDCart = product.id;
-        //buttonCartTdEl.addEventListener('click', onDeleteFromCart);
+        buttonCartTdEl.dataset.productDCart = product.productId;
+        buttonCartTdEl.addEventListener('click', onDeleteFromCart);
         const buttonTdEl = document.createElement('td');
         buttonTdEl.appendChild(buttonCartTdEl);
         buttonTdEl.setAttribute('id', 'cart-delete-button-' + product.id);
@@ -140,4 +140,25 @@ function createNewCartSubmitButton() {
     buttonEl.classList.add('form-button');
     buttonEl.textContent = 'Add coupon to cart';
     return buttonEl;
+}
+
+function onDeleteFromCart() {
+    const delId = this.dataset.productDCart;
+    const params = new URLSearchParams();
+    params.append("del-id", delId);
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onDeleteFromCartResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'protected/cart?' + params.toString());
+    xhr.send();
+}
+
+function onDeleteFromCartResponse() {
+    if (this.status === OK) {
+        const response = JSON.parse(this.responseText);
+        alert(response.message);
+        onCartClicked();
+    } else {
+        onOtherResponse(cartContentDivEl, this);
+    }
 }

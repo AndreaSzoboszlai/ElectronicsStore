@@ -56,4 +56,8 @@ public class SimpleCartService implements CartService {
     public int getTotalCartCost(int userId) throws SQLException {
         return cartDao.getTotalCartCost(userId);
     }
+
+    public void deleteProductFromCart(int userId, int prodId) throws SQLException {
+        cartDao.deleteProductFromCart(cartDao.findCartByUserId(userId).getId(), prodId);
+    }
 }
