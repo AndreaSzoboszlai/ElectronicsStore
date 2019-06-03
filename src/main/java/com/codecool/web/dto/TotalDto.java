@@ -3,16 +3,16 @@ package com.codecool.web.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TotalDto {
+public final class TotalDto {
     private List<ProductsInCartDto> productsInCart;
     private int total;
 
     public TotalDto(List<ProductsInCartDto> productsInCart) {
         this.productsInCart = productsInCart;
-        this.total = 0;
     }
 
     public void countTotal() {
+        this.total = 0;
         for (ProductsInCartDto products : productsInCart) {
             total = total + products.getPrice() * products.getQuantity();
         }

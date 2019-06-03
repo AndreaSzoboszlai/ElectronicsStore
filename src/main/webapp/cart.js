@@ -90,7 +90,7 @@ function createCartTableBody(cartDto) {
 
         const buttonCartTdEl = document.createElement('i');
         buttonCartTdEl.classList.add('icon-trash');
-        buttonCartTdEl.dataset.productCart = product.id;
+        buttonCartTdEl.dataset.productDCart = product.id;
         //buttonCartTdEl.addEventListener('click', onDeleteFromCart);
         const buttonTdEl = document.createElement('td');
         buttonTdEl.appendChild(buttonCartTdEl);

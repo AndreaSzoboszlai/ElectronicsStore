@@ -157,7 +157,7 @@ function onLoad() {
         onProfileLoad(getCurrentUser());
     } else {
         hideMenu();
-        showContents(['container', 'login-content']);S
+        showContents(['container', 'login-content']);
     }
 }
 
