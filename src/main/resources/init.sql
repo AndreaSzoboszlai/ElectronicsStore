@@ -110,6 +110,22 @@ create trigger order_stock_check
     before insert on orders_products
     for each row EXECUTE procedure check_order_stock();
 
+create or replace function increase_total_price() RETURNS trigger AS '
+    BEGIN
+        IF (TG_OP = ''DELETE'') THEN
+			UPDATE carts SET total_price = total_price - OLD.product_per_total WHERE carts.cart_id = OLD.cart_id;
+        ELSIF (TG_OP = ''UPDATE'') THEN
+			UPDATE carts SET total_price = total_price + (NEW.product_per_total - OLD.product_per_total) WHERE carts.cart_id = OLD.cart_id;
+        ELSIF (TG_OP = ''INSERT'') THEN
+			UPDATE carts SET total_price = total_price + NEW.product_per_total WHERE carts.cart_id = NEW.cart_id;
+        END IF;
+        RETURN NEW;
+    END;
+' LANGUAGE plpgsql;
+
+CREATE TRIGGER update_total_price
+    AFTER INSERT OR UPDATE OR DELETE ON carts_products
+    FOR EACH ROW EXECUTE procedure increase_total_price();
 
 -- USERS table
 INSERT INTO users(user_name, user_email, user_password, user_role) VALUES
@@ -144,9 +160,9 @@ INSERT INTO orders_products(order_id, quantity_ordered, product_id) VALUES
 	(2, 1, 3);		--8
 
 -- CARTS table
-INSERT INTO carts(total_price, user_id) VALUES
-	(220, 2),		--1
-	(300, 3);		--2
+INSERT INTO carts( user_id) VALUES
+	(2),		--1
+	(3);		--2
 
 -- CARTS_PRODUCTS table
 INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product_id) VALUES
@@ -157,4 +173,5 @@ INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product
 INSERT INTO coupons(coupon_name, coupon_percent) VALUES
 	('Summer Sale', 20),		--1
 	('June Sale', 15);			--2
-
+UPDATE carts_products SET quantity_ordered = 2, product_per_total = 440 WHERE cart_id = 2 AND product_id = 2;
+DELETE FROM carts_products WHERE cart_id = 1 AND product_id = 1;
