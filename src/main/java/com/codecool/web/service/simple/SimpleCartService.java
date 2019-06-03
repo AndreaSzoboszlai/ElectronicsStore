@@ -48,8 +48,12 @@ public class SimpleCartService implements CartService {
     }
 
     public TotalDto getTotalDto(int id) throws SQLException {
-        List<ProductsInCartDto> products = cartDao.findCartByUser(id);
-        TotalDto totalDto = new TotalDto(products);
+            List<ProductsInCartDto> products = cartDao.findCartByUser(id);
+            TotalDto totalDto = new TotalDto(products, cartDao.getTotalCartCost(id));
         return totalDto;
+    }
+
+    public int getTotalCartCost(int userId) throws SQLException {
+        return cartDao.getTotalCartCost(userId);
     }
 }

@@ -1,18 +1,18 @@
 package com.codecool.web.dto;
 
 public class ProductsInCartDto {
-    private int productId;
-    private String name;
-    private int quantity;
-    private int price;
-    private int totalPrice;
+    private final int productId;
+    private final String name;
+    private final int quantity;
+    private final int price;
+    private final int totalPrice;
 
-    public ProductsInCartDto(int productId, String name, int price, int quantity) {
+    public ProductsInCartDto(int productId, String name, int price, int quantity, int totalPrice) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.totalPrice = price * quantity;
+        this.totalPrice = totalPrice;
     }
 
     public int getProductId() {

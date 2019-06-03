@@ -25,4 +25,6 @@ public interface CartDao {
     boolean doesProductInCartUserRelationExists(int userId, int prodId) throws SQLException;
 
     void updateTotalInCArt(int cartId, int total) throws SQLException;
+
+    int getTotalCartCost(int userId) throws SQLException;
 }

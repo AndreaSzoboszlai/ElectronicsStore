@@ -18,7 +18,7 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
     @Override
     public List<ProductsInCartDto> findCartByUser(int id) throws SQLException {
         List<ProductsInCartDto> productsInCart = new ArrayList<>();
-        String sql = "SELECT products.product_id, product_name, product_price, quantity_ordered, total_price FROM products JOIN (SELECT carts.user_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
+        String sql = "SELECT products.product_id, product_name, product_per_total, product_price, quantity_ordered, total_price FROM products JOIN (SELECT product_per_total, carts.user_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -97,8 +97,9 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         return false;
     }
 
+    @Override
     public ProductsInCartDto getCartSingleDto(int id) throws SQLException {
-        String sql = "SELECT products.product_id, product_name, product_price, quantity_ordered, total_price FROM products JOIN (SELECT carts.user_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
+        String sql = "SELECT product_per_total, products.product_id, product_name, product_price, quantity_ordered, total_price FROM products JOIN (SELECT product_per_total, carts.user_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -110,6 +111,7 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         return null;
     }
 
+    @Override
     public void updateProductCount(int quantity, int prodPrice, int prodId, int cartId) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
@@ -129,7 +131,7 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         }
     }
 
-
+    @Override
     public void updateTotalInCArt(int cartId, int total) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
@@ -147,6 +149,7 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         }
     }
 
+    @Override
     public boolean doesProductInCartUserRelationExists(int userId, int prodId) throws SQLException {
         String sql = "SELECT quantity_ordered FROM products JOIN (SELECT carts.user_id, carts.cart_id, quantity_ordered, total_price, product_id FROM carts JOIN carts_products ON carts.cart_id = carts_products.cart_id WHERE carts.user_id = ? AND product_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -161,11 +164,27 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         return false;
     }
 
+    @Override
+    public int getTotalCartCost(int user_id) throws SQLException {
+        String sql = "SELECT total_price FROM carts WHERE user_id = ?"; {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, user_id);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("total_price");
+                    }
+                }
+            }
+            return 0;
+        }
+    }
+
     private ProductsInCartDto fetchProducts(ResultSet resultSet) throws SQLException {
         int productId = resultSet.getInt("product_id");
         String name = resultSet.getString("product_name");
         int price = resultSet.getInt("product_price");
         int quantity = resultSet.getInt("quantity_ordered");
-        return new ProductsInCartDto(productId, name, price, quantity);
+        int totalProdPrice = resultSet.getInt("product_per_total");
+        return new ProductsInCartDto(productId, name, price, quantity, totalProdPrice);
     }
 }

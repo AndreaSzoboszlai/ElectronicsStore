@@ -49,7 +49,7 @@ CREATE TABLE carts(
 CREATE TABLE carts_products(
 	cart_id integer,
 	quantity_ordered integer,
-	product_per_total integer,
+	product_per_total integer DEFAULT 0,
 	product_id integer,
 	FOREIGN KEY (product_id) REFERENCES products(product_id),
 	FOREIGN KEY (cart_id) REFERENCES carts(cart_id)
@@ -173,5 +173,4 @@ INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product
 INSERT INTO coupons(coupon_name, coupon_percent) VALUES
 	('Summer Sale', 20),		--1
 	('June Sale', 15);			--2
-UPDATE carts_products SET quantity_ordered = 2, product_per_total = 440 WHERE cart_id = 2 AND product_id = 2;
-DELETE FROM carts_products WHERE cart_id = 1 AND product_id = 1;
+

@@ -29,7 +29,7 @@ function createCartDisplay(cartDto) {
     tableEl.appendChild(tbodyEl);
     cartContentDivEl.appendChild(tableEl);
     const pEl = document.createElement('p');
-    const nEl = document.createTextNode("Total Price: $ " + cartDto.total);
+    const nEl = document.createTextNode("Total Price: $ " + cartDto.totalCartCost);
     pEl.appendChild(nEl);
     cartContentDivEl.appendChild(pEl);
     createCouponForm();

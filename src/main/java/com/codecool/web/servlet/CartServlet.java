@@ -31,9 +31,9 @@ public class CartServlet extends AbstractServlet {
             CartDao cartDao = new DatabaseCartDao(connection);
             CartService cartService = new SimpleCartService(cartDao, productDao);
             User user = (User) request.getSession().getAttribute("user");
-
-            TotalDto totalDto = cartService.getTotalDto(user.getId());
-            sendMessage(response, HttpServletResponse.SC_OK, totalDto);
+            List<ProductsInCartDto> products = cartService.findCartByUser(user.getId());
+            TotalDto totalDto = new TotalDto(products, cartService.getTotalCartCost(user.getId()));
+            sendMessage(response, HttpServletResponse.SC_OK, cartService.getTotalDto(user.getId()));
         } catch (SQLException ex) {
             handleSqlError(response, ex);
         }

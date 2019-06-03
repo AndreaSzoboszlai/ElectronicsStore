@@ -14,4 +14,6 @@ public interface CartService {
     Cart addCart(int userId, int productId) throws SQLException;
 
     TotalDto getTotalDto(int id) throws SQLException;
+
+    int getTotalCartCost(int userId) throws SQLException;
 }
