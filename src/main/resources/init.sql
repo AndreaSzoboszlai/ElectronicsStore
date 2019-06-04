@@ -123,8 +123,12 @@ create or replace function increase_total_price() RETURNS trigger AS '
     END;
 ' LANGUAGE plpgsql;
 
-CREATE TRIGGER update_total_price
-    AFTER INSERT OR UPDATE OR DELETE ON carts_products
+CREATE TRIGGER update_total_price_up
+    AFTER UPDATE OR DELETE ON carts_products
+    FOR EACH ROW EXECUTE procedure increase_total_price();
+
+CREATE TRIGGER update_total_price_ins
+    before  INSERT ON carts_products
     FOR EACH ROW EXECUTE procedure increase_total_price();
 
 -- USERS table
@@ -173,4 +177,3 @@ INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product
 INSERT INTO coupons(coupon_name, coupon_percent) VALUES
 	('Summer Sale', 20),		--1
 	('June Sale', 15);			--2
-
