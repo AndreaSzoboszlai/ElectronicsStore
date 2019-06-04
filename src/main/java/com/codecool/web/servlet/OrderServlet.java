@@ -1,6 +1,8 @@
 package com.codecool.web.servlet;
 
+import com.codecool.web.dao.CartDao;
 import com.codecool.web.dao.OrderDao;
+import com.codecool.web.dao.database.DatabaseCartDao;
 import com.codecool.web.dao.database.DatabaseOrderDao;
 import com.codecool.web.model.Order;
 import com.codecool.web.model.User;
@@ -22,7 +24,8 @@ public class OrderServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
             OrderDao orderDao = new DatabaseOrderDao(connection);
-            OrderService orderService = new SimpleOrderService(orderDao);
+            CartDao cartDao = new DatabaseCartDao(connection);
+            OrderService orderService = new SimpleOrderService(orderDao, cartDao);
             User user = (User) request.getSession().getAttribute("user");
             List<Order> orders = orderService.findOrdersByUser(user.getId());
 

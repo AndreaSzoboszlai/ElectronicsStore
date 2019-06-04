@@ -31,19 +31,19 @@ public class SimpleCartService implements CartService {
 
         if (!cartDao.doUserAlreadyHaveCart(userId)) {
             Cart cart = cartDao.addCart(userId);
-            cartDao.addCartProductRelation(cart.getId(), cart.getUserId());
+            cartDao.addCartProductRelation(cart.getId(), productId);
             int newCount = cartDao.getCartSingleDto(userId).getQuantity();
-            cartDao.updateProductCount(newCount, price, productId, cart.getId());
+            cartDao.updateProductCount(newCount, price * newCount, productId, cart.getId());
             return cart;
         } else {
             Cart cart = cartDao.findCartByUserId(userId);
             if (cartDao.doesProductInCartUserRelationExists(userId, productId)) {
                 int newCount = cartDao.getCartSingleDto(userId).getQuantity() + 1;
-                cartDao.updateProductCount(newCount, price, productId, cart.getId());
+                cartDao.updateProductCount(newCount, price * newCount, productId, cart.getId());
             } else {
                 cartDao.addCartProductRelation(cart.getId(), productId);
                 int newCount = cartDao.getCartSingleDto(userId).getQuantity();
-                cartDao.updateProductCount(newCount, price, productId, cart.getId());
+                cartDao.updateProductCount(newCount, price * newCount, productId, cart.getId());
             }
             return cart;
         }
@@ -62,4 +62,5 @@ public class SimpleCartService implements CartService {
     public void deleteProductFromCart(int userId, int prodId) throws SQLException {
         cartDao.deleteProductFromCart(cartDao.findCartByUserId(userId).getId(), prodId);
     }
+
 }

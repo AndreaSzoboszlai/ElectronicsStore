@@ -12,4 +12,6 @@ public interface OrderService {
     List<Order> findOrdersByUser(int id) throws SQLException;
 
     Order findOrderById(int id) throws SQLException;
+
+    void placeOrder(int userId) throws SQLException;
 }
