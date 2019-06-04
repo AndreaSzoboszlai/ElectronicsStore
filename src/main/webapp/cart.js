@@ -164,5 +164,19 @@ function onDeleteFromCartResponse() {
 }
 
 function onSubmitOrder() {
-    
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onSubmittedOrder);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/submitorder');
+    xhr.send();
+}
+
+function onSubmittedOrder() {
+    if (this.status === OK) {
+        const response = JSON.parse(this.responseText);
+        alert(response.message);
+        onOrdersClicked()
+    } else {
+        onOtherResponse(cartContentDivEl, this);
+    }
 }
