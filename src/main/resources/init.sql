@@ -52,12 +52,13 @@ CREATE TABLE carts_products(
 	product_per_total integer DEFAULT 0,
 	product_id integer,
 	FOREIGN KEY (product_id) REFERENCES products(product_id),
-	FOREIGN KEY (cart_id) REFERENCES carts(cart_id)
+	FOREIGN KEY (cart_id) REFERENCES carts(cart_id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders_products(
 	order_id integer,
-	quantity_ordered integer,
+	quantity_ordered integer DEFAULT 1,
+	product_per_total integer,
 	product_id integer,
 	FOREIGN KEY (order_id) REFERENCES orders(order_id),
 	FOREIGN KEY (product_id) REFERENCES products(product_id)
@@ -115,7 +116,7 @@ create or replace function increase_total_price() RETURNS trigger AS '
         IF (TG_OP = ''DELETE'') THEN
 			UPDATE carts SET total_price = total_price - OLD.product_per_total WHERE carts.cart_id = OLD.cart_id;
         ELSIF (TG_OP = ''UPDATE'') THEN
-			UPDATE carts SET total_price = total_price + (NEW.product_per_total - OLD.product_per_total) WHERE carts.cart_id = OLD.cart_id;
+			UPDATE carts SET total_price = total_price + (NEW.product_per_total - OLD.product_per_total) WHERE carts.cart_id = NEW.cart_id;
         ELSIF (TG_OP = ''INSERT'') THEN
 			UPDATE carts SET total_price = total_price + NEW.product_per_total WHERE carts.cart_id = NEW.cart_id;
         END IF;
@@ -124,17 +125,25 @@ create or replace function increase_total_price() RETURNS trigger AS '
 ' LANGUAGE plpgsql;
 
 CREATE TRIGGER update_total_price_up
-    AFTER UPDATE OR DELETE ON carts_products
+    AFTER INSERT UPDATE OR DELETE ON carts_products
     FOR EACH ROW EXECUTE procedure increase_total_price();
 
-CREATE TRIGGER update_total_price_ins
-    before  INSERT ON carts_products
-    FOR EACH ROW EXECUTE procedure increase_total_price();
+create or replace function update_stock() RETURNS trigger AS '
+    BEGIN
+		UPDATE products SET product_number_stock = product_number_stock - NEW.quantity_ordered WHERE products.product_id = NEW.product_id;
+        RETURN NEW;
+    END;
+' LANGUAGE plpgsql;
+
+CREATE TRIGGER update_stock
+    after INSERT ON orders_products
+    FOR EACH ROW EXECUTE procedure update_stock();
 
 -- USERS table
 INSERT INTO users(user_name, user_email, user_password, user_role) VALUES
 	('a', 'a', '1000:52a2e5376fe9155814775f1e3231a526:191ade9da2dcbabfc870ba70263b7af6865b40d8e179d19e8ea504d257810c6e78a316d77f5bd8716a7fa54f39b1f082c773ca80b45526dd59c933522e341216', 'EMPLOYEE'),
 	('r', 'r', '1000:12b64240b3c5da1f64daa0d26dbd7bfb:e314534adbb83fa0d605557a1d7394f6936b10efcfc89cae85260e69ad452241cbdd6d043ae51ecc92e8776b4aa369fa6afb028cac5254f9cc7a4e8eae0722c2', 'CUSTOMER'),
+	('d', 'd', '1000:12b64240b3c5da1f64daa0d26dbd7bfb:e314534adbb83fa0d605557a1d7394f6936b10efcfc89cae85260e69ad452241cbdd6d043ae51ecc92e8776b4aa369fa6afb028cac5254f9cc7a4e8eae0722c2', 'CUSTOMER'),
 	('c', 'c', '1000:12b64240b3c5da1f64daa0d26dbd7bfb:e314534adbb83fa0d605557a1d7394f6936b10efcfc89cae85260e69ad452241cbdd6d043ae51ecc92e8776b4aa369fa6afb028cac5254f9cc7a4e8eae0722c2', 'CUSTOMER');
 
 -- PRODUCTS table
@@ -166,7 +175,8 @@ INSERT INTO orders_products(order_id, quantity_ordered, product_id) VALUES
 -- CARTS table
 INSERT INTO carts( user_id) VALUES
 	(2),		--1
-	(3);		--2
+	(3),		--2
+    (4);
 
 -- CARTS_PRODUCTS table
 INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product_id) VALUES
@@ -177,3 +187,4 @@ INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product
 INSERT INTO coupons(coupon_name, coupon_percent) VALUES
 	('Summer Sale', 20),		--1
 	('June Sale', 15);			--2
+
