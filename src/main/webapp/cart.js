@@ -34,7 +34,7 @@ function createCartDisplay(cartDto) {
     cartContentDivEl.appendChild(pEl);
     createCouponForm();
     const buttonTdEl = createNewOrderButton();
-    //buttonTdEl.addEventListener('click', onSubmitOrder);
+    buttonTdEl.addEventListener('click', onSubmitOrder);
     cartContentDivEl.appendChild(buttonTdEl);
 }
 function createNewOrderButton() {
@@ -116,7 +116,7 @@ function createCouponForm() {
     formEl.classList.add('menu-form');
     formEl.onSubmit = 'return false;';
 
-    const inputNaEl = document.createElement("input"); //input element, text
+    const inputNaEl = document.createElement("input");
     inputNaEl.setAttribute("type","text");
     inputNaEl.classList.add("text-input");
     inputNaEl.placeholder = "Coupon code";
@@ -161,4 +161,8 @@ function onDeleteFromCartResponse() {
     } else {
         onOtherResponse(cartContentDivEl, this);
     }
+}
+
+function onSubmitOrder() {
+    
 }

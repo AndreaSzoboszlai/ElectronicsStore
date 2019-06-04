@@ -27,7 +27,6 @@ public class CartServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
             ProductDao productDao = new DatabaseProductDao(connection);
-            ProductService productService = new SimpleProductService(productDao);
             CartDao cartDao = new DatabaseCartDao(connection);
             CartService cartService = new SimpleCartService(cartDao, productDao);
             User user = (User) request.getSession().getAttribute("user");
@@ -43,7 +42,6 @@ public class CartServlet extends AbstractServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
             ProductDao productDao = new DatabaseProductDao(connection);
-            ProductService productService = new SimpleProductService(productDao);
             CartDao cartDao = new DatabaseCartDao(connection);
             CartService cartService = new SimpleCartService(cartDao, productDao);
             User user = (User) request.getSession().getAttribute("user");
@@ -58,7 +56,6 @@ public class CartServlet extends AbstractServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
             ProductDao productDao = new DatabaseProductDao(connection);
-            ProductService productService = new SimpleProductService(productDao);
             CartDao cartDao = new DatabaseCartDao(connection);
             CartService cartService = new SimpleCartService(cartDao, productDao);
             User user = (User) request.getSession().getAttribute("user");

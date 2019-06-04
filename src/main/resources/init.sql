@@ -48,7 +48,7 @@ CREATE TABLE carts(
 
 CREATE TABLE carts_products(
 	cart_id integer,
-	quantity_ordered integer,
+	quantity_ordered integer DEFAULT 1,
 	product_per_total integer DEFAULT 0,
 	product_id integer,
 	FOREIGN KEY (product_id) REFERENCES products(product_id),

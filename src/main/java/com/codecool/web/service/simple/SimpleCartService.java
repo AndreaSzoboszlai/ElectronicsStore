@@ -32,6 +32,8 @@ public class SimpleCartService implements CartService {
         if (!cartDao.doUserAlreadyHaveCart(userId)) {
             Cart cart = cartDao.addCart(userId);
             cartDao.addCartProductRelation(cart.getId(), cart.getUserId());
+            int newCount = cartDao.getCartSingleDto(userId).getQuantity();
+            cartDao.updateProductCount(newCount, price, productId, cart.getId());
             return cart;
         } else {
             Cart cart = cartDao.findCartByUserId(userId);
