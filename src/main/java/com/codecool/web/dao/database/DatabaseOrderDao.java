@@ -55,11 +55,51 @@ public final class DatabaseOrderDao extends AbstractDao implements OrderDao {
         return null;
     }
 
+    @Override
+    public Order addOrder(int orderedTotal, int userId) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO orders(ordered_total_price, user_id) VALUES (?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setInt(1, orderedTotal);
+            preparedStatement.setInt(2,userId);
+            executeInsert(preparedStatement);
+            connection.commit();
+            int id = fetchGeneratedId(preparedStatement);
+            return new Order(id, false, orderedTotal, userId);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public  void addOrderProductRelation(int orderId, int quantity, int prodPerTotal, int prodId ) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO orders_products(order_id, quantity_ordered, product_per_total, product_id) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, orderId);
+            preparedStatement.setInt(2, quantity);
+            preparedStatement.setInt(3, prodPerTotal);
+            preparedStatement.setInt(4, prodId);
+            executeInsert(preparedStatement);
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
 
     public Order fetchOrder(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("order_id");
         boolean orderStatus = resultSet.getBoolean("order_status");
         int totalPrice = resultSet.getInt("ordered_total_price");
-        return new Order(id, orderStatus, totalPrice);
+        int userId = resultSet.getInt("user_id");
+        return new Order(id, orderStatus, totalPrice, userId);
     }
 }

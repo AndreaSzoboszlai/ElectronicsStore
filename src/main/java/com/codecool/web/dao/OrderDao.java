@@ -12,4 +12,8 @@ public interface OrderDao {
     List<Order> findOrdersByUser(int id) throws SQLException;
 
     Order findOrderById(int id) throws SQLException;
+
+    Order addOrder(int orderedTotal, int userId) throws SQLException;
+
+    void addOrderProductRelation(int orderId, int quantity, int prodPerTotal, int prodId ) throws SQLException;
 }
