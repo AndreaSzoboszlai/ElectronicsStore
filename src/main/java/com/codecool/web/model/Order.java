@@ -9,13 +9,15 @@ public class Order extends AbstractModel{
     private int id;
     private boolean orderStatus;
     private int totalPrice;
+    private int userId;
     private Map<Product, Integer> orderedProducts;
 
-    public Order(int id, boolean orderStatus, int totalPrice) {
+    public Order(int id, boolean orderStatus, int totalPrice, int userId) {
         super(id);
         this.orderedProducts = new HashMap<>();
         this.orderStatus = orderStatus;
         this.totalPrice = totalPrice;
+        this.userId = userId;
     }
 
     public void addProduct(Product product, int quantity) {
