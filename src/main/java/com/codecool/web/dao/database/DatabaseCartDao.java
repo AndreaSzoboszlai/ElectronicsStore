@@ -68,11 +68,12 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
     public void addCartProductRelation(int cartId, int productId) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
-        String sql = "INSERT INTO carts_products(cart_id, quantity_ordered, product_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product_id) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, cartId);
             preparedStatement.setInt(2,1);
-            preparedStatement.setInt(3, productId);
+            preparedStatement.setInt(3, 0);
+            preparedStatement.setInt(4, productId);
             executeInsert(preparedStatement);
             connection.commit();
         } catch (SQLException ex) {
@@ -118,7 +119,7 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         String sql = "UPDATE carts_products SET quantity_ordered = ?, product_per_total = ? WHERE product_id = ? AND cart_id = ? ";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, quantity);
-            preparedStatement.setInt(2, quantity * prodPrice);
+            preparedStatement.setInt(2, prodPrice);
             preparedStatement.setInt(3, prodId);
             preparedStatement.setInt(4, cartId);
             preparedStatement.executeUpdate();
@@ -147,6 +148,24 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         } finally {
             connection.setAutoCommit(autoCommit);
         }
+    }
+
+    @Override
+    public void deleteCartByUser(int userId) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "DELETE FROM carts WHERE user_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException exc) {
+            connection.rollback();
+            throw exc;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+
     }
 
     @Override
