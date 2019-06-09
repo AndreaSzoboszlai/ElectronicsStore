@@ -21,4 +21,6 @@ public interface UserDao {
     void updateUserPasswordById(int id, String password) throws SQLException;
 
     boolean doesUserExists(String email) throws SQLException;
+
+    User findById(int id) throws SQLException;
 }

@@ -280,7 +280,7 @@ function createProductEditForm(product) {
 
     const inputidEl = document.createElement("input"); //input element, text
     inputidEl.setAttribute("type","text");
-    inputidEl.classList.add("text-input");
+    inputidEl.classList.add("text-input-readonly");
     inputidEl.value = product.id;
     inputidEl.readOnly = true;
     inputidEl.setAttribute("name","product-id");

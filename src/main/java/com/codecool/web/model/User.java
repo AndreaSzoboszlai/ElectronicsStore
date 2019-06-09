@@ -11,8 +11,6 @@ public final class User extends AbstractModel {
     private String password;
     private Role userRole;
     private int numberOfPurchases;
-    private List<Order> orders;
-    private Cart cart;
 
     public User(int id, String name, String email, String password, Role userRole, int numberOfPurchases) {
         super(id);
@@ -21,7 +19,6 @@ public final class User extends AbstractModel {
         this.password = password;
         this.userRole = userRole;
         this.numberOfPurchases = numberOfPurchases;
-        this.orders = new ArrayList<>();
     }
 
 
@@ -36,14 +33,6 @@ public final class User extends AbstractModel {
 
     public User() {
 
-    }
-
-    public void addCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public void emptyCart() {
-        this.cart = null;
     }
 
     public String getName() {

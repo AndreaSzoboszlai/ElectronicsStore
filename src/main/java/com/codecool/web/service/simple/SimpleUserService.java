@@ -38,8 +38,8 @@ public final class SimpleUserService implements UserService {
         return userDao.findAll();
     }
 
-    public User findByEmail(String email) throws SQLException {
-        return userDao.findByEmail(email);
+    public User findById(int id) throws SQLException {
+        return userDao.findById(id);
     }
 
     public User addUser(String name, String email, String password, Role role) throws SQLException {

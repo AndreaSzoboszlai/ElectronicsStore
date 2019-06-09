@@ -244,6 +244,10 @@ ul.links li {
     width: 90%
 }
 
+.text-input-readonly {
+    display: none;
+}
+
 textarea {
   width: 100%;
   height: 150px;

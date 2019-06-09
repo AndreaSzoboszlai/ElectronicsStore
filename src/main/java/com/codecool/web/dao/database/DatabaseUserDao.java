@@ -44,6 +44,20 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
+    public User findById(int id) throws SQLException {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return fetchUser(resultSet);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public User addUser(String name, String email, String password, Role role) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
