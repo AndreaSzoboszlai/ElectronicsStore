@@ -26,7 +26,7 @@ CREATE TABLE products(
 	product_number_stock integer,
 	CONSTRAINT product_name_not_empty CHECK (product_name <> ''),
 	CONSTRAINT product_price_min CHECK (product_price > 0),
-	CONSTRAINT product_number_stock_min CHECK (product_price >= 0)
+	CONSTRAINT product_number_stock_min CHECK (product_number_stock >= 0)
 );
 
 CREATE TABLE orders(
@@ -68,7 +68,8 @@ CREATE TABLE coupons(
 	coupon_id SERIAL PRIMARY KEY,
 	coupon_name varchar(40),
 	coupon_percent integer,
-	CONSTRAINT cart_coupon_max CHECK (coupon_percent <= 100 AND coupon_percent >= 0)
+	CONSTRAINT cart_coupon_max CHECK (coupon_percent <= 100 AND coupon_percent >= 0),
+    CONSTRAINT coupon_name_not_empty CHECK (coupon_name <> '')
 );
 
 
@@ -125,7 +126,7 @@ create or replace function increase_total_price() RETURNS trigger AS '
 ' LANGUAGE plpgsql;
 
 CREATE TRIGGER update_total_price_up
-    AFTER INSERT UPDATE OR DELETE ON carts_products
+    AFTER INSERT OR UPDATE OR DELETE ON carts_products
     FOR EACH ROW EXECUTE procedure increase_total_price();
 
 create or replace function update_stock() RETURNS trigger AS '
@@ -151,7 +152,7 @@ INSERT INTO products(product_name, product_price, product_description, product_n
 	('HP - ENVY x360 2-in-1', 220, 'Improve productivity with this laptop.', 10),  				--1
 	('HP - Chromebook', 300, 'ChromeBook', 6),  												--2
 	('Dell - Inspiron 2-in-1 ', 1000, '4K Ultra HD.', 10),  									--3
-	('Lenovo - 130-15AST', 400, 'Ideal for student.', 4),  										--4
+	('Lenovo - 130-15AST', 400, 'Ideal for students.', 4),  									--4
 	('HP - Pavilion x360 2-in-1', 600, 'HP Pavilion x360 Convertible 2-in-1 Laptop.', 2),  		--5
 	('Microsoft - Surface Book 2', 1300, 'HP Pavilion x360 Convertible 2-in-1 Laptop.', 1);  	--6
 

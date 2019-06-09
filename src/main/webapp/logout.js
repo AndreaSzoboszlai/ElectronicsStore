@@ -11,6 +11,7 @@ function onLogoutResponse() {
         const response = JSON.parse(this.responseText);
         alert(response.message);
         mainContentEl.style.display = 'block';
+        profileContentDivEl.style.display = 'none';
         onLoad();
     } else {
         const contentEls = document.getElementsByClassName('content');

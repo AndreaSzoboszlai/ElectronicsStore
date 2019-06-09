@@ -3,6 +3,7 @@ let role;
 function onProfileLoad(user) {
     clearMessages();
     role = user.userRole;
+    profileContentDivEl.style.display = 'block';
     if (user.userRole === "EMPLOYEE") {
         showContentById('link-add-product-li');
         document.getElementById('link-add-product-li').style.display = 'inline-block';

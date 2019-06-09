@@ -1,27 +1,17 @@
 package com.codecool.web.model;
 
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class Order extends AbstractModel{
-    private int id;
-    private boolean orderStatus;
-    private int totalPrice;
-    private int userId;
-    private Map<Product, Integer> orderedProducts;
+    private final boolean orderStatus;
+    private final int totalPrice;
+    private final int userId;
 
     public Order(int id, boolean orderStatus, int totalPrice, int userId) {
         super(id);
-        this.orderedProducts = new HashMap<>();
         this.orderStatus = orderStatus;
         this.totalPrice = totalPrice;
         this.userId = userId;
-    }
-
-    public void addProduct(Product product, int quantity) {
-        orderedProducts.put(product, quantity);
     }
 
     public boolean isOrderStatus() {
@@ -30,6 +20,11 @@ public class Order extends AbstractModel{
 
     public int getTotalPrice() {
         return totalPrice;
+    }
+
+
+    public int getUserId() {
+        return userId;
     }
 
     @Override

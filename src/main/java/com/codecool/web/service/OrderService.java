@@ -1,5 +1,6 @@
 package com.codecool.web.service;
 
+import com.codecool.web.dto.TotalOrderDto;
 import com.codecool.web.model.Order;
 
 import java.sql.SQLException;
@@ -14,4 +15,8 @@ public interface OrderService {
     Order findOrderById(int id) throws SQLException;
 
     void placeOrder(int userId) throws SQLException;
+
+    TotalOrderDto findOrderByUser(int orderId) throws SQLException;
+
+    void orderStatusToShipped(int orderId) throws SQLException;
 }

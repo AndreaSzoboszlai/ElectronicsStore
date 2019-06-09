@@ -66,7 +66,28 @@ function createOrdersTableBody(orders) {
         priceTdEl.textContent = '$ ' + order.totalPrice;
 
         const statusTdEl = document.createElement('td');
-        statusTdEl.textContent = order.orderStatus;
+
+        if (role === "EMPLOYEE") {
+            if (order.orderStatus === true) {
+                statusTdEl.textContent = 'Shipped';
+            } else {
+                const inputNaEl = document.createElement("input");
+                inputNaEl.setAttribute("type","checkbox");
+                inputNaEl.dataset.orderId = order.id;
+                inputNaEl.classList.add("status-checkbox");
+                inputNaEl.setAttribute("name","checkbox-order-status");
+                inputNaEl.addEventListener('change', onChangeStatus);
+                statusTdEl.appendChild(inputNaEl);
+            }
+        } else {
+            if (order.orderStatus === true) {
+                statusTdEl.textContent = 'Shipped';
+            } else {
+                statusTdEl.textContent = 'Has not been shipped yet';
+            }
+        }
+        //statusTdEl.textContent = order.orderStatus;
+
 
         const trEl = document.createElement('tr');
         trEl.setAttribute('id', 'row-product-id-' + order.id);
@@ -79,7 +100,60 @@ function createOrdersTableBody(orders) {
     return tbodyEl;
 }
 
-function onOrderNumberClicked() {
+function onChangeStatus() {
     const orderId = this.dataset.orderId;
-    console.log(orderId);
+    const params = new URLSearchParams();
+    params.append('orderId', orderId);
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onChangedStatusLoad);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'protected/orders');
+    xhr.send(params);
+}
+
+function onChangedStatusLoad() {
+    if (this.status === OK) {
+        const response = JSON.parse(this.responseText);
+        alert(response.message);
+        onAllOrdersClicked();
+    } else {
+        onOtherResponse(allOrdersContentDivEl, this);
+    }
+}
+
+function onAllOrderClickedResponse() {
+    if (this.status === OK) {
+        const orderDto = JSON.parse(this.responseText);
+        onShowAllOrderDetails(orderDto);
+    } else {
+        onOtherResponse(allOrdersContentDivEl, this);
+    }
+}
+
+function onShowAllOrderDetails(orderDto) {
+    removeAllChildren(allOrdersContentDivEl);
+    const tableEl = document.createElement('table');
+    tableEl.setAttribute('id', 'all-order-table');
+    const theadEl = createMyOrderTableHead();
+    const orderList = orderDto.productsInOrder
+    const tbodyEl = createMyOrderTableBody(orderList);
+    tableEl.appendChild(theadEl);
+    tableEl.appendChild(tbodyEl);
+    allOrdersContentDivEl.appendChild(tableEl);
+    const pEl = document.createElement('p');
+    const nEl = document.createTextNode("Total Price: $ " + orderDto.totalOrderCost);
+    pEl.appendChild(nEl);
+    const pStatusEl = document.createElement('p');
+    var nStatusEl = null;
+    if (orderDto.status === true) {
+        nStatusEl = document.createTextNode("Your order has been shipped");
+    } else {
+        nStatusEl = document.createTextNode("Your order has not been shipped yet");
+    }
+    pStatusEl.appendChild(nStatusEl);
+    allOrdersContentDivEl.appendChild(pStatusEl);
+    allOrdersContentDivEl.appendChild(pEl);
+    const buttonBackEl = createBackButton();
+    buttonBackEl.addEventListener('click', onAllOrdersClicked);
+    allOrdersContentDivEl.appendChild(buttonBackEl);
 }

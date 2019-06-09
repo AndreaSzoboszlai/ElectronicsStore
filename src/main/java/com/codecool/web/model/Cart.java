@@ -8,11 +8,9 @@ public class Cart extends AbstractModel{
     private int totalPrice;
     private int cartDiscount;
     private int userId;
-    private Map<Product, Integer> productsInCart;
 
     public Cart(int id, int totalPrice, int cartDiscount) {
         super(id);
-        this.productsInCart = new HashMap<>();
         this.totalPrice = totalPrice;
         this.cartDiscount = cartDiscount;
     }

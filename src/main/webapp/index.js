@@ -4,7 +4,7 @@ const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
-let loginContentDivEl;
+let profileContentDivEl;
 let couponContentDivEl;
 let menuListEl;
 let mainContentEl;
@@ -130,7 +130,7 @@ function onLoad() {
     navDivEl = document.getElementById('menu');
     menuListEl = document.getElementById('menu-list');
     mainContentEl = document.getElementById('main-content');
-    loginContentDivEl = document.getElementById('login-content');
+    profileContentDivEl = document.getElementById('profile-content');
     addProductContentEl = document.getElementById('add-products-content');
 
     loginTitleEl = document.getElementById('login-title');
@@ -158,6 +158,7 @@ function onLoad() {
     } else {
         hideMenu();
         showContents(['container', 'login-content']);
+        profileContentDivEl.style.display = 'none';
     }
 }
 
