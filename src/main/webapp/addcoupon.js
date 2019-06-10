@@ -66,6 +66,7 @@ function onSubmitNewCoupon() {
     params.append('coupon-name', name);
     params.append('coupon-percentage', percentage);
     params.append('coupon-code', code);
+    debugger;
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onSubmittedCoupon);
     xhr.addEventListener('error', onNetworkError);

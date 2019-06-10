@@ -6,6 +6,7 @@ import com.codecool.web.dto.ProductsInCartDto;
 import com.codecool.web.dto.TotalDto;
 import com.codecool.web.model.Cart;
 import com.codecool.web.service.CartService;
+import com.codecool.web.service.exception.ServiceException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -49,10 +50,14 @@ public class SimpleCartService implements CartService {
         }
     }
 
-    public TotalDto getTotalDto(int id) throws SQLException {
-            List<ProductsInCartDto> products = cartDao.findCartByUser(id);
-            TotalDto totalDto = new TotalDto(products, cartDao.getTotalCartCost(id), cartDao.findCartByCartId(id).getCartDiscount());
-        return totalDto;
+    public TotalDto getTotalDto(int id) throws SQLException, ServiceException {
+         if (cartDao.getTotalCartCost(id) != 0) {
+             List<ProductsInCartDto> products = cartDao.findCartByUser(id);
+             TotalDto totalDto = new TotalDto(products, cartDao.getTotalCartCost(id), cartDao.findCartByCartId(id).getCartDiscount());
+             return totalDto;
+         } else {
+             throw new ServiceException("No product in cart yet.");
+         }
     }
 
     public int getTotalCartCost(int userId) throws SQLException {

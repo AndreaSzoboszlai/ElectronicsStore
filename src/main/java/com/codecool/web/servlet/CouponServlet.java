@@ -4,8 +4,6 @@ import com.codecool.web.dao.CartDao;
 import com.codecool.web.dao.CouponDao;
 import com.codecool.web.dao.database.DatabaseCartDao;
 import com.codecool.web.dao.database.DatabaseCouponDao;
-import com.codecool.web.dto.CouponDto;
-import com.codecool.web.model.Coupon;
 import com.codecool.web.model.User;
 import com.codecool.web.service.CouponService;
 import com.codecool.web.service.exception.ServiceException;
@@ -18,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/protected/coupon")
 public final class CouponServlet extends AbstractServlet {

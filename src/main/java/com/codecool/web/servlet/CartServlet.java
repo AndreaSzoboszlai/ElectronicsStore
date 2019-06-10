@@ -9,6 +9,7 @@ import com.codecool.web.dto.TotalDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.CartService;
 import com.codecool.web.service.ProductService;
+import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.simple.SimpleCartService;
 import com.codecool.web.service.simple.SimpleProductService;
 
@@ -35,6 +36,8 @@ public class CartServlet extends AbstractServlet {
             sendMessage(response, HttpServletResponse.SC_OK, totalDto);
         } catch (SQLException ex) {
             handleSqlError(response, ex);
+        } catch (ServiceException ex) {
+            sendMessage(response, HttpServletResponse.SC_BAD_REQUEST, ex);
         }
     }
 

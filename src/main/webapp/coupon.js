@@ -42,6 +42,9 @@ function createCouponHeader() {
     const nameThEl = document.createElement('th');
     nameThEl.textContent = 'Name';
 
+    const codeThEl = document.createElement('th');
+    codeThEl.textContent = 'Code';
+
     const percentageThEl = document.createElement('th');
     percentageThEl.textContent = 'Percentage'
 
@@ -50,6 +53,7 @@ function createCouponHeader() {
 
     const trTdEl = document.createElement('tr');
     trTdEl.appendChild(nameThEl);
+    trTdEl.appendChild(codeThEl);
     trTdEl.appendChild(percentageThEl);
     trTdEl.appendChild(deleteThEl);
 
@@ -65,6 +69,8 @@ function createCouponTable(coupons) {
 
         const nameTdEl = document.createElement('td');
         nameTdEl.textContent = coupon.name;
+        const codeTdEl = document.createElement('td');
+        codeTdEl.textContent = coupon.code;
         const percentageTdEl = document.createElement('td');
         percentageTdEl.textContent = coupon.percentage;
         const buttonDeleteEl = document.createElement('i');
@@ -77,6 +83,7 @@ function createCouponTable(coupons) {
         trEl.setAttribute('id', 'row-coupon-id-' + coupon.id);
 
         trEl.appendChild(nameTdEl);
+        trEl.appendChild(codeTdEl);
         trEl.appendChild(percentageTdEl);
         trEl.appendChild(buttonDeleteTdEl);
 

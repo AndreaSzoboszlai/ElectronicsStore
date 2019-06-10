@@ -7,10 +7,10 @@ function onCartClicked() {
 }
 
 function onCartLoad() {
+    hideContentById('main-content');
+    showContents(['my-cart-content']);
+    removeAllChildren(cartContentDivEl);
     if (this.status === OK) {
-        hideContentById('main-content');
-        showContents(['my-cart-content']);
-        removeAllChildren(cartContentDivEl);
         const cartDto = JSON.parse(this.responseText);
         createCartDisplay(cartDto);
     } else {
@@ -191,13 +191,13 @@ function onCouponUse() {
     params.append('coupon-code', code);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onSubmittedCoupon);
+    xhr.addEventListener('load', onUsedCoupon);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('GET', 'protected/coupon?' + params.toString());
     xhr.send();
 }
 
-function onSubmittedCoupon() {
+function onUsedCoupon() {
     const response = JSON.parse(this.responseText);
     if (this.status === OK) {
         alert(response.message);

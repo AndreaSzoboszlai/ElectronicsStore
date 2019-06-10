@@ -23,6 +23,9 @@ public final class Coupon extends AbstractModel {
         return percentage;
     }
 
+    public String getCode() {
+        return code;
+    }
 
     @Override
     public boolean equals(Object o) {
