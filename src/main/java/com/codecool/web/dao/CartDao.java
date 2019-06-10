@@ -30,7 +30,7 @@ public interface CartDao {
 
     void updateDiscountInCart(int cartId, double newTotal, int discount) throws SQLException;
 
-    int getTotalCartCost(int userId) throws SQLException;
+    double getTotalCartCost(int userId) throws SQLException;
 
     void deleteProductFromCart(int cartId, int prodId) throws SQLException;
 

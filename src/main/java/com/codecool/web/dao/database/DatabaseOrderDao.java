@@ -57,12 +57,12 @@ public final class DatabaseOrderDao extends AbstractDao implements OrderDao {
     }
 
     @Override
-    public Order addOrder(int orderedTotal, int userId) throws SQLException {
+    public Order addOrder(double orderedTotal, int userId) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "INSERT INTO orders(ordered_total_price, user_id) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setInt(1, orderedTotal);
+            preparedStatement.setDouble(1, orderedTotal);
             preparedStatement.setInt(2,userId);
             executeInsert(preparedStatement);
             connection.commit();
@@ -113,7 +113,6 @@ public final class DatabaseOrderDao extends AbstractDao implements OrderDao {
 
     @Override
     public boolean findOrderStatusById(int orderId) throws SQLException {
-        List<ProductsInOrderDto> productsInCart = new ArrayList<>();
         String sql = "SELECT order_status FROM products JOIN (SELECT product_id, order_status FROM orders JOIN orders_products ON orders.order_id = orders_products.order_id WHERE orders.order_id = ?) AS temp_table ON temp_table.product_id = products.product_id";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, orderId);
@@ -147,7 +146,7 @@ public final class DatabaseOrderDao extends AbstractDao implements OrderDao {
     private Order fetchOrder(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("order_id");
         boolean orderStatus = resultSet.getBoolean("order_status");
-        int totalPrice = resultSet.getInt("ordered_total_price");
+        double totalPrice = resultSet.getDouble("ordered_total_price");
         int userId = resultSet.getInt("user_id");
         return new Order(id, orderStatus, totalPrice, userId);
     }

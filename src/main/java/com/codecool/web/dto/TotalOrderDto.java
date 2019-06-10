@@ -4,10 +4,10 @@ import java.util.List;
 
 public class TotalOrderDto {
     private final List<ProductsInOrderDto> productsInOrder;
-    private final int totalOrderCost;
+    private final double totalOrderCost;
     private final boolean status;
 
-    public TotalOrderDto(List<ProductsInOrderDto> productsInOrder, int totalOrderCost, boolean status) {
+    public TotalOrderDto(List<ProductsInOrderDto> productsInOrder, double totalOrderCost, boolean status) {
         this.productsInOrder = productsInOrder;
         this.totalOrderCost = totalOrderCost;
         this.status = status;
@@ -17,7 +17,7 @@ public class TotalOrderDto {
         return productsInOrder;
     }
 
-    public int getTotalOrderCost() {
+    public double getTotalOrderCost() {
         return totalOrderCost;
     }
 

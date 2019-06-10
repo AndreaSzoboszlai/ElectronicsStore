@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class Order extends AbstractModel{
     private final boolean orderStatus;
-    private final int totalPrice;
+    private final double totalPrice;
     private final int userId;
 
-    public Order(int id, boolean orderStatus, int totalPrice, int userId) {
+    public Order(int id, boolean orderStatus, double totalPrice, int userId) {
         super(id);
         this.orderStatus = orderStatus;
         this.totalPrice = totalPrice;
@@ -18,7 +18,7 @@ public class Order extends AbstractModel{
         return orderStatus;
     }
 
-    public int getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 

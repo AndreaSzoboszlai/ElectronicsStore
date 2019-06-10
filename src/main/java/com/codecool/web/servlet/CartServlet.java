@@ -4,14 +4,11 @@ import com.codecool.web.dao.CartDao;
 import com.codecool.web.dao.ProductDao;
 import com.codecool.web.dao.database.DatabaseCartDao;
 import com.codecool.web.dao.database.DatabaseProductDao;
-import com.codecool.web.dto.ProductsInCartDto;
 import com.codecool.web.dto.TotalDto;
 import com.codecool.web.model.User;
 import com.codecool.web.service.CartService;
-import com.codecool.web.service.ProductService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.simple.SimpleCartService;
-import com.codecool.web.service.simple.SimpleProductService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/protected/cart")
 public class CartServlet extends AbstractServlet {

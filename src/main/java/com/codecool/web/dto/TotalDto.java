@@ -4,10 +4,10 @@ import java.util.List;
 
 public final class TotalDto {
     private final List<ProductsInCartDto> productsInCart;
-    private final int totalCartCost;
+    private final double totalCartCost;
     private final int percentage;
 
-    public TotalDto(List<ProductsInCartDto> productsInCart, int totalCartCost, int percentage) {
+    public TotalDto(List<ProductsInCartDto> productsInCart, double totalCartCost, int percentage) {
         this.productsInCart = productsInCart;
         this.totalCartCost = totalCartCost;
         this.percentage = percentage;
@@ -17,7 +17,7 @@ public final class TotalDto {
         return productsInCart;
     }
 
-    public int getTotalCartCost() {
+    public double getTotalCartCost() {
         return totalCartCost;
     }
 

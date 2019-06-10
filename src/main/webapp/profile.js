@@ -47,6 +47,10 @@ function showProfileDetails(user) {
     const nRoleEl = document.createTextNode("Role: " + user.userRole);
     pRoleEl.appendChild(nRoleEl);
 
+    const pNumEl = document.createElement('p');
+    const nNumEl = document.createTextNode("Number of orders: " + user.numberOfPurchases);
+    pNumEl.appendChild(nNumEl);
+
     const editProfileButtonEl = createEditProfileButton();
     editProfileButtonEl.dataset.userId = user.id;
     editProfileButtonEl.addEventListener('click', onProfileEditClicked);
@@ -54,6 +58,7 @@ function showProfileDetails(user) {
     profileContentDivEl.appendChild(pNameEl);
     profileContentDivEl.appendChild(pEmailEl);
     profileContentDivEl.appendChild(pRoleEl);
+    profileContentDivEl.appendChild(pNumEl);
     profileContentDivEl.appendChild(editProfileButtonEl);
 }
 

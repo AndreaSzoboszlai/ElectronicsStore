@@ -219,13 +219,13 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
     }
 
     @Override
-    public int getTotalCartCost(int user_id) throws SQLException {
+    public double getTotalCartCost(int user_id) throws SQLException {
         String sql = "SELECT total_price FROM carts WHERE user_id = ?"; {
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setInt(1, user_id);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        return resultSet.getInt("total_price");
+                        return resultSet.getDouble("total_price");
                     }
                 }
             }
