@@ -39,7 +39,7 @@ public class SimpleOrderService implements OrderService {
     @Override
     public void placeOrder(int userId) throws SQLException {
         List<ProductsInCartDto> products = cartDao.findCartByUser(userId);
-        TotalDto totalDto = new TotalDto(products, cartDao.getTotalCartCost(userId));
+        TotalDto totalDto = new TotalDto(products, cartDao.getTotalCartCost(userId), cartDao.findCartByCartId(userId).getCartDiscount());
         Order order = orderDao.addOrder(totalDto.getTotalCartCost(), userId);
         for (ProductsInCartDto orderedProducts : products) {
             orderDao.addOrderProductRelation(order.getId(), orderedProducts.getQuantity(), orderedProducts.getTotalPrice(), orderedProducts.getProductId());

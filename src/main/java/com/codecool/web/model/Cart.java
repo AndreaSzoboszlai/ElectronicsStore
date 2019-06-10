@@ -9,6 +9,13 @@ public class Cart extends AbstractModel{
     private int cartDiscount;
     private int userId;
 
+    public Cart(int id, int totalPrice, int cartDiscount, int userId) {
+        super(id);
+        this.totalPrice = totalPrice;
+        this.cartDiscount = cartDiscount;
+        this.userId = userId;
+    }
+
     public Cart(int id, int totalPrice, int cartDiscount) {
         super(id);
         this.totalPrice = totalPrice;

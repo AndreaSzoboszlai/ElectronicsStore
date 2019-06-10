@@ -51,7 +51,7 @@ public class SimpleCartService implements CartService {
 
     public TotalDto getTotalDto(int id) throws SQLException {
             List<ProductsInCartDto> products = cartDao.findCartByUser(id);
-            TotalDto totalDto = new TotalDto(products, cartDao.getTotalCartCost(id));
+            TotalDto totalDto = new TotalDto(products, cartDao.getTotalCartCost(id), cartDao.findCartByCartId(id).getCartDiscount());
         return totalDto;
     }
 

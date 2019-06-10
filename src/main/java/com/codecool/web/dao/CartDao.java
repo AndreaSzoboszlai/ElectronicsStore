@@ -18,13 +18,17 @@ public interface CartDao {
 
     Cart findCartByUserId(int userId) throws SQLException;
 
+    Cart findCartByCartId(int userId) throws SQLException;
+
     ProductsInCartDto getCartSingleDto(int id) throws SQLException;
 
-    public void updateProductCount(int quantity, int prodPrice, int prodId, int cartId) throws SQLException;
+    void updateProductCount(int quantity, int prodPrice, int prodId, int cartId) throws SQLException;
 
     boolean doesProductInCartUserRelationExists(int userId, int prodId) throws SQLException;
 
     void updateTotalInCArt(int cartId, int total) throws SQLException;
+
+    void updateDiscountInCart(int cartId, double newTotal, int discount) throws SQLException;
 
     int getTotalCartCost(int userId) throws SQLException;
 

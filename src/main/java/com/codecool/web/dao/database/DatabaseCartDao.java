@@ -3,7 +3,6 @@ package com.codecool.web.dao.database;
 import com.codecool.web.dao.CartDao;
 import com.codecool.web.dto.ProductsInCartDto;
 import com.codecool.web.model.Cart;
-import com.codecool.web.model.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -37,8 +36,25 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     int cartId = resultSet.getInt("cart_id");
-                    int userOwnId = resultSet.getInt("user_id");
-                    return new Cart(cartId, userOwnId);
+                    int totalPrice = resultSet.getInt("total_price");
+                    int discount = resultSet.getInt("cart_discount");
+                    return new Cart(cartId, totalPrice, discount, userId);
+                }
+            }
+        }
+        return null;
+    }
+
+    public Cart findCartByCartId(int cartId) throws SQLException {
+        String sql = "SELECT * FROM carts WHERE user_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, cartId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int userId = resultSet.getInt("user_id");
+                    int totalPrice = resultSet.getInt("total_price");
+                    int discount = resultSet.getInt("cart_discount");
+                    return new Cart(cartId, totalPrice, discount, userId);
                 }
             }
         }
@@ -140,6 +156,25 @@ public final class DatabaseCartDao extends AbstractDao implements CartDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, total);
             preparedStatement.setInt(2, cartId);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException exc) {
+            connection.rollback();
+            throw exc;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public void updateDiscountInCart(int cartId, double newTotal, int discount) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "UPDATE carts SET cart_discount = ?, total_price = ? WHERE cart_id = ? ";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, discount);
+            preparedStatement.setDouble(2, newTotal);
+            preparedStatement.setInt(3, cartId);
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException exc) {

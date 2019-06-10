@@ -1,9 +1,12 @@
 package com.codecool.web.servlet;
 
+import com.codecool.web.dao.CartDao;
 import com.codecool.web.dao.CouponDao;
+import com.codecool.web.dao.database.DatabaseCartDao;
 import com.codecool.web.dao.database.DatabaseCouponDao;
 import com.codecool.web.dto.CouponDto;
 import com.codecool.web.model.Coupon;
+import com.codecool.web.model.User;
 import com.codecool.web.service.CouponService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.simple.SimpleCouponService;
@@ -24,13 +27,15 @@ public final class CouponServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
             CouponDao couponDao = new DatabaseCouponDao(connection);
-            CouponService couponService = new SimpleCouponService(couponDao);
-            //haven't used yet
-            int id = Integer.valueOf(request.getParameter("coupon-id"));
-            Coupon coupon = couponService.findById(id);
-            sendMessage(response, HttpServletResponse.SC_OK, coupon);
-        } catch (SQLException ex) {
-            handleSqlError(response, ex);
+            CartDao cartDao = new DatabaseCartDao(connection);
+            CouponService couponService = new SimpleCouponService(couponDao, cartDao);
+
+            String code = request.getParameter("coupon-code");
+            User user = (User) request.getSession().getAttribute("user");
+            couponService.addCouponToCart(code, user.getId());
+            sendMessage(response, HttpServletResponse.SC_OK, "Coupon added to purchase.");
+        } catch (SQLException | ServiceException ex) {
+            sendMessage(response, HttpServletResponse.SC_BAD_REQUEST, ex);
         }
     }
 
@@ -38,8 +43,8 @@ public final class CouponServlet extends AbstractServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection connection = getConnection(request.getServletContext())) {
             CouponDao couponDao = new DatabaseCouponDao(connection);
-            CouponService couponService = new SimpleCouponService(couponDao);
-
+            CartDao cartDao = new DatabaseCartDao(connection);
+            CouponService couponService = new SimpleCouponService(couponDao, cartDao);
             int id = Integer.valueOf(request.getParameter("coupon-id"));
             couponService.deleteCouponById(id);
             sendMessage(response, HttpServletResponse.SC_OK, "Coupon successfully deleted");

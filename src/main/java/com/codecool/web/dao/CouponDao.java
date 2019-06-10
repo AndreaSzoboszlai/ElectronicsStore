@@ -11,9 +11,9 @@ public interface CouponDao {
 
     Coupon findById(int id) throws SQLException;
 
-    Coupon findByName(String name) throws SQLException;
+    Coupon findByCode(String code) throws SQLException;
 
-    Coupon add(String name, int percentage) throws SQLException;
+    Coupon add(String name, int percentage , String code) throws SQLException;
 
     boolean doesCouponExists(String name) throws SQLException;
 

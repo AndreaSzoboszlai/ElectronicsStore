@@ -32,14 +32,14 @@ CREATE TABLE products(
 CREATE TABLE orders(
 	order_id SERIAL PRIMARY KEY,
 	order_status boolean DEFAULT false,
-	ordered_total_price integer,
+	ordered_total_price DOUBLE PRECISION,
 	user_id integer,
 	FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE carts(
 	cart_id SERIAL PRIMARY KEY,
-	total_price integer DEFAULT 0,
+	total_price DOUBLE PRECISION DEFAULT 0,
 	cart_discount integer DEFAULT 0,
 	user_id integer,
 	FOREIGN KEY (user_id) REFERENCES users(user_id),
@@ -67,6 +67,7 @@ CREATE TABLE orders_products(
 CREATE TABLE coupons(
 	coupon_id SERIAL PRIMARY KEY,
 	coupon_name varchar(40),
+	coupon_code varchar(6),
 	coupon_percent integer,
 	CONSTRAINT cart_coupon_max CHECK (coupon_percent <= 100 AND coupon_percent >= 0),
     CONSTRAINT coupon_name_not_empty CHECK (coupon_name <> '')
@@ -163,15 +164,14 @@ INSERT INTO orders(ordered_total_price, user_id) VALUES
 
 
 -- ORDER_PRODUCTS table
-INSERT INTO orders_products(order_id, quantity_ordered, product_id) VALUES
-	(1, 1, 1),		--1
-	(1, 1, 2),		--2
-	(1, 1, 3),		--3
-	(1, 1, 4),		--4
-	(1, 1, 1),		--5
-	(2, 1, 1),		--6
-	(2, 1, 2),		--7
-	(2, 1, 3);		--8
+INSERT INTO orders_products(order_id, quantity_ordered, product_per_total, product_id) VALUES
+	(1, 2, 4400, 1),	--1
+	(1, 1, 300, 2),		--2
+	(1, 1, 1000, 3),	--3
+	(1, 1, 400, 4),		--4
+	(2, 1, 220, 1),		--5
+	(2, 1, 300, 2),		--6
+	(2, 1, 1000, 3);	--7
 
 -- CARTS table
 INSERT INTO carts( user_id) VALUES
@@ -185,7 +185,7 @@ INSERT INTO carts_products(cart_id, quantity_ordered, product_per_total, product
 	(2, 1, 300, 2);
 
 -- COUPONS table
-INSERT INTO coupons(coupon_name, coupon_percent) VALUES
-	('Summer Sale', 20),		--1
-	('June Sale', 15);			--2
+INSERT INTO coupons(coupon_name, coupon_code, coupon_percent) VALUES
+	('Summer Sale', '154abc', 20),		--1
+	('June Sale', '123cba', 15);		--2
 

@@ -6,11 +6,13 @@ public final class Coupon extends AbstractModel {
 
     private final String name;
     private final int percentage;
+    private final String code;
 
-    public Coupon(int id, String name, int percentage) {
+    public Coupon(int id, String name, int percentage, String code) {
         super(id);
         this.name = name;
         this.percentage = percentage;
+        this.code = code;
     }
 
     public String getName() {

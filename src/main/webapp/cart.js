@@ -29,7 +29,7 @@ function createCartDisplay(cartDto) {
     tableEl.appendChild(tbodyEl);
     cartContentDivEl.appendChild(tableEl);
     const pEl = document.createElement('p');
-    const nEl = document.createTextNode("Total Price: $ " + cartDto.totalCartCost);
+    const nEl = document.createTextNode("Total Price: $ " + cartDto.totalCartCost + ", with discount: " + cartDto.percentage + " %");
     pEl.appendChild(nEl);
     cartContentDivEl.appendChild(pEl);
     createCouponForm();
@@ -120,12 +120,12 @@ function createCouponForm() {
     inputNaEl.setAttribute("type","text");
     inputNaEl.classList.add("text-input");
     inputNaEl.placeholder = "Coupon code";
-    inputNaEl.setAttribute("name","coupon-name");
+    inputNaEl.setAttribute("name","coupon-code");
 
     const brEl = document.createElement("br");
 
     const sEl = createNewCartSubmitButton();
-    //sEl.addEventListener('click', onCouponUse);
+    sEl.addEventListener('click', onCouponUse);
     formEl.appendChild(inputNaEl);
     formEl.appendChild(brEl);
     formEl.appendChild(sEl);
@@ -178,5 +178,32 @@ function onSubmittedOrder() {
         onOrdersClicked()
     } else {
         onOtherResponse(cartContentDivEl, this);
+    }
+}
+
+function onCouponUse() {
+    const newCouponFormEl = document.forms['add-coupon-form'];
+    const codeInput = newCouponFormEl.querySelector('input[name="coupon-code"]');
+
+    removeAllChildren(cartContentDivEl);
+    const code = codeInput.value;
+    const params = new URLSearchParams();
+    params.append('coupon-code', code);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onSubmittedCoupon);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/coupon?' + params.toString());
+    xhr.send();
+}
+
+function onSubmittedCoupon() {
+    const response = JSON.parse(this.responseText);
+    if (this.status === OK) {
+        alert(response.message);
+        onCartClicked()
+    } else {
+        alert(response.message);
+        onCartClicked();
     }
 }

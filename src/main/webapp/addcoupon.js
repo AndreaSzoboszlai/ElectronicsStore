@@ -23,11 +23,18 @@ function createNewCouponForm() {
     inputPrEl.placeholder = "Percentage(numbers 1-99)";
     inputPrEl.setAttribute("name","coupon-percentage");
 
+    const inputCodeEl = document.createElement("input"); //input element, text
+    inputCodeEl.setAttribute("type","text");
+    inputCodeEl.classList.add("text-input");
+    inputCodeEl.placeholder = "Coupon code";
+    inputCodeEl.setAttribute("name","coupon-code");
+
     const brEl = document.createElement("br");
     const sEl = createNewCouponSubmitButton();
     sEl.addEventListener('click', onSubmitNewCoupon);
 
     formEl.appendChild(inputNaEl);
+    formEl.appendChild(inputCodeEl);
     formEl.appendChild(inputPrEl);
     formEl.appendChild(brEl);
     formEl.appendChild(sEl);
@@ -48,15 +55,17 @@ function onSubmitNewCoupon() {
     const newProductFormEl = document.forms['new-coupon-form'];
     const nameInput = newProductFormEl.querySelector('input[name="coupon-name"]');
     const percentageInput = newProductFormEl.querySelector('input[name="coupon-percentage"]');
+    const codeInput = newProductFormEl.querySelector('input[name="coupon-code"]')
 
     removeAllChildren(addProductContentEl);
     const name = nameInput.value;
     const percentage = percentageInput.value;
+    const code = codeInput.value;
     const params = new URLSearchParams();
 
     params.append('coupon-name', name);
     params.append('coupon-percentage', percentage);
-
+    params.append('coupon-code', code);
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onSubmittedCoupon);
     xhr.addEventListener('error', onNetworkError);
