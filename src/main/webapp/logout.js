@@ -12,6 +12,7 @@ function onLogoutResponse() {
         alert(response.message);
         mainContentEl.style.display = 'block';
         profileContentDivEl.style.display = 'none';
+        document.getElementById('login-title').textContent = "Login";
         onLoad();
     } else {
         const contentEls = document.getElementsByClassName('content');
