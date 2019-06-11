@@ -16,9 +16,20 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/protected/user")
 public class UserServlet extends AbstractServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try (Connection connection = getConnection(request.getServletContext())) {
+            UserDao userDao = new DatabaseUserDao(connection);
+            UserService userService = new SimpleUserService(userDao);
+            List<User> users = userService.findAll();
+            sendMessage(response, HttpServletResponse.SC_OK, users);
+        } catch (SQLException ex) {
+            handleSqlError(response, ex);
+        }
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

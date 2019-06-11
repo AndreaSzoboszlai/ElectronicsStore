@@ -7,6 +7,7 @@ function onProfileLoad(user) {
     showProfileDetails(user);
     if (user.userRole === "EMPLOYEE") {
         hideContentById('link-add-user-li');
+        hideContentById('link-list-users-li');
         showContentById('link-add-product-li');
         document.getElementById('link-add-product-li').style.display = 'inline-block';
         showContentById('link-coupons-li');
@@ -19,6 +20,8 @@ function onProfileLoad(user) {
     } else if (user.userRole === "ADMIN") {
         showContentById('link-add-user-li');
         document.getElementById('link-add-user-li').style.display = 'inline-block';
+        showContentById('link-list-users-li');
+        document.getElementById('link-list-users-li').style.display = 'inline-block';
         showContentById('link-add-product-li');
         document.getElementById('link-add-product-li').style.display = 'inline-block';
         showContentById('link-coupons-li');
@@ -30,6 +33,7 @@ function onProfileLoad(user) {
         showMenu();
     }else {
         hideContentById('link-add-user-li');
+        hideContentById('link-list-users-li');
         hideContentById('link-add-product-li');
         hideContentById('link-coupons-li')
         showContentById('link-cart-li');

@@ -13,6 +13,9 @@ let allProductsEl;
 let addProductContentEl;
 let allOrdersContentDivEl;
 let myOrdersContentDivEl;
+let cartContentDivEl;
+let addUserContentDivEl;
+let allUserContentDivEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -147,6 +150,7 @@ function onLoad() {
     myOrdersContentDivEl = document.getElementById('my-orders-content');
     cartContentDivEl = document.getElementById('my-cart-content');
     addUserContentDivEl = document.getElementById('add-user-content');
+    allUserContentDivEl =  document.getElementById('all-user-content');
 
     const loginButtonEl = document.getElementById('login-button');
     loginButtonEl.addEventListener('click', onLoginButtonClicked);
