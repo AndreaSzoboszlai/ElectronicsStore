@@ -340,3 +340,9 @@ td {
     margin: 0 auto;
     border-bottom: 1px solid #ddd;
 }
+
+#role-drop-down {
+    width: 92%;
+    font-size: 14px;
+    margin: 4px;
+}

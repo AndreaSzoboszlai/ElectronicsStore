@@ -15,6 +15,7 @@
     <script src="order.js"></script>
     <script src="myorders.js"></script>
     <script src="cart.js"></script>
+    <script src="user.js"></script>
 </head>
     <body>
 
@@ -23,6 +24,9 @@
 
         <nav id="menu" class="menu">
             <ul id="menu-list" class="menu-list">
+                <li id="link-add-user-li" class="menu-item">
+                    <a href="javascript:void(0)" onclick="onAddUser()" id="link-add-user" class="menu-link">Add User<span class="menu-line"></span></a>
+                </li>
                 <li id="link-add-product-li" class="menu-item">
                     <a href="javascript:void(0)" onclick="onAddProductClicked()" id="link-add-product" class="menu-link">Add Product<span class="menu-line"></span></a>
                 </li>
@@ -56,9 +60,17 @@
                     </div>
                     <div id="main-content" class="main-content">
                         <h1>Welcome on our page!</h1>
-                        <p>Here you can find the best product!</p>
-                        <p>Please register or log in to browse and buy products.</p>
+                        <p>Here you can find the best products!</p>
+                        <p>Please register or log in to view content.</p>
                     </div>
+
+                    <section id="add-user-content" class="content-box">
+                        <header class="content-header">
+                            <h3 id="add-products-content-title" class="content-title">
+                                Add User
+                            </h3>
+                        </header>
+                    </section>
 
                     <section id="add-products-content" class="content-box">
                         <header class="content-header">

@@ -146,6 +146,7 @@ function onLoad() {
     allOrdersContentDivEl = document.getElementById('all-orders-content');
     myOrdersContentDivEl = document.getElementById('my-orders-content');
     cartContentDivEl = document.getElementById('my-cart-content');
+    addUserContentDivEl = document.getElementById('add-user-content');
 
     const loginButtonEl = document.getElementById('login-button');
     loginButtonEl.addEventListener('click', onLoginButtonClicked);
