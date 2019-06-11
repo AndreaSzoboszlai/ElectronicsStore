@@ -141,6 +141,28 @@ CREATE TRIGGER update_stock
     after INSERT ON orders_products
     FOR EACH ROW EXECUTE procedure update_stock();
 
+
+create or replace function check_cart_stock() RETURNS trigger AS '
+    BEGIN
+        IF (TG_OP = ''INSERT'') THEN
+            DECLARE
+				stock_product integer;
+                stock_ordered integer;
+            BEGIN
+				SELECT product_number_stock INTO stock_product FROM products WHERE product_id = NEW.product_id;
+                IF stock_product < NEW.quantity_ordered THEN
+                	RAISE EXCEPTION ''Not enough product in stock'';
+                END IF;
+			END;
+        END IF;
+        RETURN NEW;
+    END;
+' LANGUAGE plpgsql;
+
+create trigger cart_stock_check
+    before insert or update on carts_products
+    for each row EXECUTE procedure check_cart_stock();
+
 -- USERS table
 INSERT INTO users(user_name, user_email, user_password, user_role) VALUES
 	('a', 'a', '1000:52a2e5376fe9155814775f1e3231a526:191ade9da2dcbabfc870ba70263b7af6865b40d8e179d19e8ea504d257810c6e78a316d77f5bd8716a7fa54f39b1f082c773ca80b45526dd59c933522e341216', 'ADMIN'),
