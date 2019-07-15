@@ -1,8 +1,9 @@
-\# About
+# ElectronicsStore
+## About
 
 Quickstart repo for a Maven managed AJAX web-application using Servlets and JDBC.
 
-There are three roles:
+##There are three roles:
 	- Admin
 	- Employee
 	- Customer
@@ -23,7 +24,7 @@ Before deploying to a webserver create a `Resource` like in your webserver's con
 		  url="jdbc:postgresql://localhost:5432/electronics_store"
 		  closeMethod="close"/>
 ```
-
-*Note*: the `closeMethod="close"` attribute is important. [As per Tomcat's documentation][1] this ensures that connections retrieved from the datasource are closed properly when a webapp context is reloaded/restarted/redeployed/etc.
-
-[1]: https://tomcat.apache.org/tomcat-9.0-doc/config/context.html\#Resource_Definitions
+## Pre registred users
+name: a, email: a, password: a, role: ADMIN;
+name: r, email: r, password: r, role: EMPLOYEE;
+name: e, email: e, password: r, role: EMPLOYEE;
