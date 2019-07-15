@@ -4,9 +4,9 @@
 Quickstart repo for a Maven managed AJAX web-application using Servlets and JDBC.
 
 ##There are three roles:
-	- Admin
-	- Employee
-	- Customer
+* Admin
+* Employee
+* Customer
 
 Employees can add new products to the web page and delete products when it's not in a cart or order, they can also add coupons and can see all orders and mark selected as shipped.
 Admins have the same functions but with the addition of also adding users to the system, and seeing all user and their datas.
@@ -25,6 +25,6 @@ Before deploying to a webserver create a `Resource` like in your webserver's con
 		  closeMethod="close"/>
 ```
 ## Pre registred users
-name: a, email: a, password: a, role: ADMIN;
-name: r, email: r, password: r, role: EMPLOYEE;
-name: e, email: e, password: r, role: EMPLOYEE;
+*  name: a, email: a, password: a, role: ADMIN;
+*  name: r, email: r, password: r, role: CUSTOMER;
+*  name: e, email: e, password: r, role: EMPLOYEE;
